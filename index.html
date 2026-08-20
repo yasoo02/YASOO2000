@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YSOO200 - Social Media Growth</title>
     
-    <!-- إضافة مكتبة Firebase للاتصال بالسيرفر -->
+    <!-- إضافة مكتبة Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -179,7 +179,7 @@
         .btn-edit { background: var(--accent); color: white; }
         .btn-del { background: var(--danger); color: white; }
 
-        /* --- Image Viewer Modal (Fix for Mobile) --- */
+        /* --- Image Viewer Modal --- */
         #imageViewerModal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; padding: 20px;
@@ -189,7 +189,7 @@
         #closeImageViewerBtn { position: absolute; top: 20px; right: 30px; color: white; font-size: 35px; font-weight: bold; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
         #closeImageViewerBtn:hover { background: rgba(255,255,255,0.4); }
 
-        /* --- Mobile Responsive (بدون 3 خطوط) --- */
+        /* --- Mobile Responsive --- */
         @media (max-width: 768px) {
             header {
                 height: auto;
@@ -371,25 +371,22 @@
         </div>
     </div>
 
-    <!-- IMAGE VIEWER MODAL (For Mobile Safety) -->
+    <!-- IMAGE VIEWER MODAL -->
     <div id="imageViewerModal">
         <span id="closeImageViewerBtn" onclick="closeImageViewer()">&times;</span>
         <img id="viewerImage" src="" alt="صورة الدفع">
     </div>
 
     <script>
-        // ✅ تم إصلاح الرابط هنا (الرابط الخاص بك)
+        // ✅ الرابط الصحيح الخاص بك
         const FIREBASE_DB_URL = 'https://william-b47a3-default-rtdb.firebaseio.com/';
 
         // إعداد Firebase
-        const firebaseConfig = {
-            databaseURL: FIREBASE_DB_URL
-        };
+        const firebaseConfig = { databaseURL: FIREBASE_DB_URL };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // 🔑 تم إصلاح كلمة السر (admin123)
-        // لو حبيت تغيرها، غير الرقم ده بس
+        // 🔑 كلمة المرور (عدلها هنا لو حبيت)
         const ADMIN_PASSWORD = 'admin123';
 
         const initialPackages = [
@@ -426,13 +423,12 @@
             { id: 'ig-7', platform: 'instagram', quantity: 10000, price: 1000, description: 'متابعين حقيقيين', deliveryInfo: 'فوري', active: true },
         ];
 
-        // State Management
         let store = {
             packages: JSON.parse(localStorage.getItem('ysoo200_packages')) || initialPackages,
             orders: []
         };
 
-        // دالة لجلب الطلبات من السيرفر وتحديث الواجهة
+        // دالة لجلب الطلبات من السيرفر
         function loadOrdersFromServer(callback) {
             const ordersRef = db.ref('orders');
             ordersRef.on('value', (snapshot) => {
@@ -575,7 +571,6 @@
                 paymentProof: proofBase64
             };
 
-            // حفظ الطلب في قاعدة بيانات Firebase
             await db.ref('orders').push(order);
 
             document.getElementById('orderSteps').style.display = 'none';
@@ -593,7 +588,7 @@
                         <div><strong>الحساب:</strong> ${account}</div>
                     </div>
                     <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
-                        <tr style="background:#f5f5f5;"><th style="padding:8px; text-align:left;">الخدمة</th><th style="padding:8px;">العدد</th><th style="padding:8px;">السعر</th><th style="padding:8px;">الإجمالي</th></tr>
+                        <tr style="background:#f5f5f5;"><th style="padding:8px; text-align:right;">الخدمة</th><th style="padding:8px;">العدد</th><th style="padding:8px;">السعر</th><th style="padding:8px;">الإجمالي</th></tr>
                         <tr><td style="padding:8px; border-bottom:1px solid #eee;">متابعين ${platform.charAt(0).toUpperCase()+platform.slice(1)}</td><td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">${quantity}</td><td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">${price} ج.م</td><td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">${price} ج.م</td></tr>
                     </table>
                     <div style="text-align:right; font-weight:bold; font-size:1.2rem;">الإجمالي: ${price} ج.م</div>
@@ -617,17 +612,12 @@
 
         function openAdmin() { switchPage('admin'); }
 
-        // ✅ تم إصلاح دالة الدخول هنا (المشكلة كانت في الترتيب)
         function adminLogin() {
             const pwd = document.getElementById('adminPwd').value;
             if(pwd === ADMIN_PASSWORD) {
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminDashboard').style.display = 'block';
-                
-                // 1. عرض الباقات فوراً عشان لوحة التحكم متبقاش فاضية
                 renderAdminPackages(); 
-                
-                // 2. نجيب الطلبات من السيرفر، وبعد ما تيجي نعرض الإحصائيات والجدول
                 loadOrdersFromServer(() => {
                     renderAdminStats();
                     renderAdminOrders();
@@ -742,7 +732,6 @@
             const order = store.orders.find(o => o.id === id);
             if(order) {
                 order.orderStatus = status;
-                // تحديث الحالة في قاعدة البيانات
                 db.ref('orders/' + id).update({ orderStatus: status });
                 renderAdminOrders();
                 renderAdminStats();
@@ -858,5 +847,9 @@
                         <div><strong>الحساب:</strong> ${order.account}</div>
                     </div>
                     <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
-                        <tr style="background:#f5f5f5;"><th style="padding:8px; text-align:left;">الخدمة</th><th style="padding:8px;">العدد</th><th style="padding:8px;">الإجمالي</th></tr>
-                        <tr><td style="padding:8px; bor
+                        <tr style="background:#f5f5f5;"><th style="padding:8px; text-align:right;">الخدمة</th><th style="padding:8px;">العدد</th><th style="padding:8px;">الإجمالي</th></tr>
+                        <tr><td style="padding:8px; border-bottom:1px solid #eee;">متابعين ${order.platform}</td><td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">${order.quantity}</td><td style="padding:8px; border-bottom:1px solid #eee; text-align:center;">${order.total} ج.م</td></tr>
+                    </table>
+                    <div style="text-align:right; font-weight:bold; font-size:1.2rem;">الإجمالي: ${order.total} ج.م</div>
+                    <div style="margin-top:20px; font-size:0.9rem; color:#555; border-top:1px solid #eee; padding-top:15px;">
+   
