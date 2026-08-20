@@ -29,25 +29,51 @@
         body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; }
 
-        /* --- Header --- */
+        /* --- Header (بدون 3 خطوط) --- */
         header {
-            background: rgba(11, 13, 21, 0.8); backdrop-filter: blur(10px);
-            position: fixed; top: 0; width: 100%; height: var(--header-height);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(11, 13, 21, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--header-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
+
         .logo {
-            font-size: 1.8rem; font-weight: 800;
+            font-size: 1.8rem;
+            font-weight: 800;
             background: -webkit-linear-gradient(45deg, var(--fb-blue), var(--ig-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -1px; cursor: pointer;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            cursor: pointer;
         }
-        .nav-links { display: flex; gap: 25px; align-items: center; }
-        .nav-links a { font-weight: 600; transition: color 0.3s; font-size: 0.95rem; }
-        .nav-links a:hover { color: var(--accent); }
-        .btn-admin { background: rgba(255, 255, 255, 0.05); padding: 8px 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); }
-        .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
-        .hamburger span { width: 25px; height: 2px; background: white; border-radius: 2px; }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        .nav-links a:hover { color: var(--accent); background: rgba(255,255,255,0.05); }
+
+        .btn-admin {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
         /* --- Main Sections --- */
         section { padding: 100px 5% 60px; display: none; animation: fadeIn 0.6s ease; }
@@ -158,11 +184,24 @@
         #closeImageViewerBtn { position: absolute; top: 20px; right: 30px; color: white; font-size: 35px; font-weight: bold; cursor: pointer; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
         #closeImageViewerBtn:hover { background: rgba(255,255,255,0.4); }
 
-        /* --- Mobile Responsive --- */
+        /* --- Mobile Responsive (بدون 3 خطوط) --- */
         @media (max-width: 768px) {
-            .nav-links { display: none; flex-direction: column; position: absolute; top: var(--header-height); left: 0; width: 100%; background: var(--bg-dark); padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-            .nav-links.open { display: flex; }
-            .hamburger { display: flex; }
+            header {
+                height: auto;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 15px 5%;
+                gap: 10px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            .nav-links a {
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
             .hero h1 { font-size: 2.5rem; }
             .dashboard-layout { grid-template-columns: 1fr; }
             .admin-sidebar ul { flex-direction: row; overflow-x: auto; }
@@ -174,15 +213,10 @@
 
     <header>
         <div class="logo" onclick="switchPage('home')">YSOO200</div>
-        <nav>
-            <div class="hamburger" onclick="toggleNav()">
-                <span></span><span></span><span></span>
-            </div>
-            <div class="nav-links" id="navLinks">
-                <a href="#" onclick="switchPage('home')">الرئيسية</a>
-                <a href="#" onclick="switchPage('shop')">الخدمات</a>
-                <a href="#" class="btn-admin" onclick="openAdmin()">لوحة التحكم</a>
-            </div>
+        <nav class="nav-links" id="navLinks">
+            <a href="#" onclick="switchPage('home')">الرئيسية</a>
+            <a href="#" onclick="switchPage('shop')">الخدمات</a>
+            <a href="#" class="btn-admin" onclick="openAdmin()">لوحة التحكم</a>
         </nav>
     </header>
 
@@ -340,7 +374,7 @@
 
     <script>
         // 🔑 ضبط كلمة السر هنا
-        const ADMIN_PASSWORD = 'yassen312002';
+        const ADMIN_PASSWORD = 'admin123';
 
         const initialPackages = [
             { id: 'fb-1', platform: 'facebook', quantity: 500, price: 25, description: 'متابعين حقيقيين', deliveryInfo: 'فوري', active: true },
@@ -386,11 +420,10 @@
         function switchPage(id) {
             document.querySelectorAll('section').forEach(el => el.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active');
-            document.getElementById('navLinks').classList.remove('open');
+            // تم إزالة إخفاء القائمة لأنها لم تعد موجودة
             if(id === 'shop') renderShop();
             window.scrollTo(0,0);
         }
-        function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
 
         function renderShop(filter = 'all') {
             const grid = document.getElementById('shop-grid');
