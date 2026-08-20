@@ -122,7 +122,6 @@
         .admin-login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; z-index: 3000; flex-direction: column; }
         .admin-login-overlay.hidden { display: none; }
         .admin-login-box { background: var(--bg-card); padding: 40px; border-radius: 12px; width: 100%; max-width: 350px; text-align: center; }
-        /* مهم جداً: الـ id هنا لازم يكون adminPwd عشان الجافاسكربت يلاقيه */
         .admin-login-box input { margin: 15px 0; padding: 12px; width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: white; }
 
         .dashboard-layout { display: grid; grid-template-columns: 200px 1fr; gap: 20px; min-height: 80vh; }
@@ -228,7 +227,6 @@
         <div id="adminLogin" class="admin-login-overlay">
             <div class="admin-login-box">
                 <h2>YSOO200 Admin</h2>
-                <!-- تم إصلاح الـ id هنا ليكون adminPwd -->
                 <input type="password" id="adminPwd" placeholder="كلمة المرور">
                 <button class="btn-primary" onclick="adminLogin()">دخول</button>
             </div>
@@ -341,10 +339,9 @@
     </div>
 
     <script>
-        // 🔑 اضبط كلمة السر هنا (آخر الكود في السطر ده):
-        const ADMIN_PASSWORD = 'admin123'; // غير ده عشان تغير الباسورد
+        // 🔑 ضبط كلمة السر هنا
+        const ADMIN_PASSWORD = 'yassen312002';
 
-        // --- INITIAL DATA FROM IMAGES ---
         const initialPackages = [
             { id: 'fb-1', platform: 'facebook', quantity: 500, price: 25, description: 'متابعين حقيقيين', deliveryInfo: 'فوري', active: true },
             { id: 'fb-2', platform: 'facebook', quantity: 1000, price: 50, description: 'متابعين حقيقيين', deliveryInfo: 'فوري', active: true },
@@ -555,7 +552,6 @@
         function openAdmin() { switchPage('admin'); }
 
         function adminLogin() {
-            // بستخدم المتغير ADMIN_PASSWORD اللي عرفناه في أول السكربت
             const pwd = document.getElementById('adminPwd').value;
             if(pwd === ADMIN_PASSWORD) {
                 document.getElementById('adminLogin').classList.add('hidden');
@@ -628,7 +624,7 @@
             let html = `<h3>إدارة الطلبات</h3>
             <input type="text" placeholder="البحث باسم العميل أو رقم الفاتورة..." onkeyup="filterAdminOrders(this.value)" style="width:100%; padding:10px; margin-bottom:15px; background:var(--bg-dark); border:1px solid rgba(255,255,255,0.1); border-radius:6px; color:white;">
             <table class="admin-table">
-                <thead><tr><th>الفاتورة</th><th>العميل</th><th>المنصة</th><th>العدد</th><th>الإجمالي</th><th>التاريخ</th><th>الحالة</th><th>صورة الدفع</th><th>إجراءات</th></tr></thead>
+                <thead><tr><th>الفاتورة</th><th>العميل</th><th>رابط الحساب</th><th>المنصة</th><th>العدد</th><th>الإجمالي</th><th>التاريخ</th><th>الحالة</th><th>صورة الدفع</th><th>إجراءات</th></tr></thead>
                 <tbody id="adminOrdersBody">
             `;
             store.orders.forEach(o => {
@@ -638,6 +634,10 @@
                     <tr>
                         <td>${o.invoiceNumber}</td>
                         <td>${o.customerName}</td>
+                        <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <a href="${o.account}" target="_blank" style="color: var(--accent); text-decoration: underline;">${o.account}</a>
+                            <button class="btn-sm btn-edit" onclick="navigator.clipboard.writeText('${o.account}').then(()=>alert('تم النسخ!'))" style="padding: 2px 6px; font-size: 0.6rem; margin-top: 2px;">نسخ</button>
+                        </td>
                         <td>${o.platform}</td>
                         <td>${o.quantity}</td>
                         <td>${o.total} ج.م</td>
