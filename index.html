@@ -219,7 +219,7 @@
         <div id="adminLogin" class="admin-login-overlay">
             <div class="admin-login-box">
                 <h2>YSOO200 Admin</h2>
-                <input type="password" id="adminPwd" placeholder="كلمة المرور (admin123)">
+                <input type="password" id="adminPwd" placeholder="كلمة المرور">
                 <button class="btn-primary" onclick="adminLogin()">دخول</button>
             </div>
         </div>
@@ -311,8 +311,8 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         
-        // 🔑 كلمة المرور
-        const ADMIN_PASSWORD = 'admin123';
+        // 🔑 كلمة المرور (تم تغييرها بناءً على طلبك)
+        const ADMIN_PASSWORD = 'yassen 312002';
 
         const initialPackages = [
             { id: 'fb-1', platform: 'facebook', quantity: 500, price: 25, description: 'متابعين حقيقيين', deliveryInfo: 'فوري', active: true },
@@ -762,4 +762,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
