@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YSOO200 - Admin Panel</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: #1e293b; border-radius: 12px; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #334155; text-align: center; font-size: 14px; }
+        th { background: #334155; }
+        button { background: #2563eb; border: none; padding: 8px 15px; color: white; border-radius: 6px; cursor: pointer; }
+        button.danger { background: #ef4444; }
+        button.success { background: #10b981; }
+        input { padding: 8px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white; width: 100%; margin-bottom: 10px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat { background: #334155; padding: 15px; border-radius: 8px; text-align: center; }
+        .hidden { display: none; }
+        #loginBox { max-width: 300px; margin: 100px auto; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="loginBox">
+        <h2>Admin Login</h2>
+        <input type="password" id="pass" placeholder="كلمة المرور">
+        <button onclick="login()">دخول</button>
+    </div>
+
+    <div id="panel" class="container hidden">
+        <h2>لوحة التحكم</h2>
+        <div class="stats" id="stats"></div>
+        
+        <h3>الطلبات</h3>
+        <input type="text" id="search" placeholder="بحث..." oninput="renderOrders()">
+        <table id="ordersTable">
+            <thead><tr><th>الفاتورة</th><th>العميل</th><th>المنصة</th><th>الحساب</th><th>السعر</th><th>الحالة</th><th>إثبات</th><th>إجراءات</th></tr></thead>
+            <tbody id="ordersBody"></tbody>
+        </table>
+        
+        <h3>إضافة باقة</h3>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <select id="newPlatform"><option value="instagram">إنستغرام</option><option value="facebook">فيسبوك</option><option value="tiktok">تيك توك</option></select>
+            <input type="number" id="newQty" placeholder="العدد">
+            <input type="number" id="newPrice" placeholder="السعر">
+            <button onclick="addPackage()">إضافة</button>
+        </div>
+    </div>
+
+    <script>
+        const FIREBASE_DB_URL = 'https://william-b47a3-default-rtdb.firebaseio.com/';
+        firebase.initializeApp({ databaseURL: FIREBASE_DB_URL });
+        const db = firebase.database();
+        const PASSWORD = 'yassen 312002';
+
+        let allOrders = [];
+        let packages = JSON.parse(localStorage.getItem('ysoo200_admin_packages')) || [];
+
+        function login() {
+            if(document.getElementById('pass').value === PASSWORD) {
+                document.getElementById('loginBox').classList.add('hidden');
+                document.getElementById('panel').classList.remove('hidden');
+                loadData();
+            } else {
+                alert('كلمة مرور خاطئة');
+            }
+        }
+
+        function loadData() {
+            db.ref('orders').on('value', snap => {
+                allOrders = [];
+                snap.forEach(child => allOrders.push({ id: child.key, ...child.val() }));
+                renderStats();
+                renderOrders();
+            });
+        }
+
+        function renderStats() {
+            document.getElementById('stats').innerHTML = `
+                <div class="stat"><h4>الكل</h4><p>${allOrders.length}</p></div>
+                <div class="stat"><h4>قيد الانتظار</h4><p>${allOrders.filter(o => o.orderStatus === 'pending').length}</p></div>
+                <div class="stat"><h4>مكتمل</h4><p>${allOrders.filter(o => o.orderStatus === 'completed').length}</p></div>
+                <div class="stat"><h4>المبيعات</h4><p>${allOrders.reduce((a, o) => a + (o.orderStatus === 'completed' ? o.total : 0), 0)} ج.م</p></div>
+            `;
+        }
+
+        function renderOrders() {
+            const term = document.getElementById('search').value.toLowerCase();
+            const body = document.getElementById('ordersBody');
+            body.innerHTML = '';
+            allOrders.filter(o => o.customerName.toLowerCase().includes(term) || o.invoiceNumber.includes(term)).forEach(o => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${o.invoiceNumber}</td>
+                    <td>${o.customerName}</td>
+                    <td>${o.platform}</td>
+                    <td>${o.account}</td>
+                    <td>${o.total} ج.م</td>
+                    <td>${o.orderStatus}</td>
+                    <td>${o.paymentProof ? '<a href="'+o.paymentProof+'" target="_blank">عرض</a>' : 'لا يوجد'}</td>
+                    <td>
+                        <button class="success" onclick="changeStatus('${o.id}', 'completed')">إكمال</button>
+                        <button class="danger" onclick="changeStatus('${o.id}', 'cancelled')">إلغاء</button>
+                    </td>
+                `;
+                body.appendChild(row);
+            });
+        }
+
+        function changeStatus(id, status) {
+            db.ref('orders/' + id).update({ orderStatus: status });
+        }
+
+        function addPackage() {
+            const platform = document.getElementById('newPlatform').value;
+            const qty = parseInt(document.getElementById('newQty').value);
+            const price = parseInt(document.getElementById('newPrice').value);
+            if(qty && price) {
+                const newPkg = { platform, quantity: qty, price, active: true };
+                packages.push(newPkg);
+                localStorage.setItem('ysoo200_admin_packages', JSON.stringify(packages));
+                alert('تمت إضافة الباقة. يرجى تحديث الصفحة الرئيسية لرؤيتها.');
+            }
+        }
+    </script>
+</body>
+</html>
