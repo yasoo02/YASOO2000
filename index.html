@@ -9,32 +9,443 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#0b0d15;color:#fff;line-height:1.6}
+body{background:#0b0d15;color:#fff;line-height:1.6;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-header{background:#14161e;padding:15px 5%;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;width:100%;z-index:100;border-bottom:1px solid #222}
-.logo{font-size:1.5rem;font-weight:800;background:linear-gradient(45deg,#1877f2,#c32aa3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
-nav{display:flex;gap:15px;align-items:center}
-nav a{font-weight:600;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;gap:5px}
-nav a:hover{background:rgba(255,255,255,.05)}
+header{background:rgba(11,13,21,.95);padding:15px 5%;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;width:100%;z-index:100;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:10px}
+.logo{font-size:1.5rem;font-weight:800;background:linear-gradient(45deg,#1877f2,#c32aa3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;letter-spacing:-1px}
+nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+nav a{font-weight:600;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:.85rem;display:flex;align-items:center;gap:5px}
+nav a:hover{background:rgba(255,255,255,.05);color:#5865f2}
+nav a i{font-size:.9rem}
 .btn-admin{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
-section{padding:100px 5% 60px;display:none;min-height:100vh}
+section{padding:100px 5% 60px;display:none;min-height:100vh;animation:fadeIn .4s}
 section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
 h1{text-align:center;font-size:3rem;margin-bottom:15px;background:linear-gradient(135deg,#fff,#5865f2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{text-align:center;color:#9aa0b2;font-size:1.1rem;max-width:600px;margin:0 auto 40px}
 .pillars{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
-.pillar{background:#14161e;padding:15px 25px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.05);font-size:.9rem}
-.pillar i{font-size:1.2rem;color:#5865f2}
-.filters{display:flex;justify-content:center;gap:10px;margin-bottom:30px;flex-wrap:wrap}
-.filters button{padding:10px 20px;border:none;border-radius:8px;color:#fff;font-weight:700;cursor:pointer;background:#5865f2;display:flex;align-items:center;gap:6px;font-size:.85rem}
-.filters .btn-fb{background:#1877f2}
-.filters .btn-ig{background:#c32aa3}
-.filters .btn-tt{background:linear-gradient(45deg,#00f2fe,#fe0979)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:15px}
-.card{background:#14161e;padding:20px;border-radius:12px;text-align:center;border:1px solid #222;position:relative;transition:.3s}
+.pillar{background:#14161e;padding:15px 22px;border-radius:12px;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.05);font-size:.85rem}
+.pillar i{font-size:1rem;color:#5865f2}
+h2.sec{text-align:center;font-size:2rem;margin-bottom:10px}
+.desc{text-align:center;color:#9aa0b2;margin-bottom:30px;font-size:.9rem}
+.filters{display:flex;justify-content:center;gap:8px;margin-bottom:25px;flex-wrap:wrap}
+.filters button{padding:8px 15px;border:none;border-radius:8px;color:#fff;font-weight:700;cursor:pointer;background:#5865f2;display:flex;align-items:center;gap:5px;font-size:.8rem}
+.filters button i{font-size:.85rem}
+.filters .fb{background:#1877f2}
+.filters .ig{background:#c32aa3}
+.filters .tt{background:linear-gradient(45deg,#00f2fe,#fe0979)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px}
+.card{background:#14161e;padding:18px;border-radius:12px;text-align:center;border:1px solid #222;position:relative;transition:.3s}
 .card:hover{transform:translateY(-5px);border-color:#5865f2}
-.badge{position:absolute;top:10px;right:10px;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:700;display:flex;align-items:center;gap:4px}
-.badge-fb{background:#1877f2}.badge-ig{background:#c32aa3}.badge-tt{background:linear-gradient(45deg,#00f2fe,#fe0979)}
-.card h3{font-size:2.2rem;margin:15px 0 5px}
+.badge{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:20px;font-size:.65rem;font-weight:700;display:flex;align-items:center;gap:4px}
+.badge i{font-size:.7rem}
+.badge-fb{background:#1877f2}
+.badge-ig{background:#c32aa3}
+.badge-tt{background:linear-gradient(45deg,#00f2fe,#fe0979)}
+.card h3{font-size:2rem;margin:15px 0 5px;font-weight:800}
+.card .price{color:#9aa0b2;font-weight:600;font-size:1rem;margin-bottom:5px}
+.card .info{color:#43b581;font-size:.75rem;margin-bottom:12px}
+button.act{background:linear-gradient(135deg,#5865f2,#404eed);border:none;padding:10px;border-radius:8px;color:#fff;width:100%;cursor:pointer;font-weight:700;display:flex;justify-content:center;align-items:center;gap:6px;font-size:.85rem}
+button.act:hover{transform:scale(1.02)}
+button.act i{font-size:.85rem}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(5px);display:none;justify-content:center;align-items:center;z-index:2000;padding:15px}
+.modal.active{display:flex}
+.modal-box{background:#14161e;padding:25px;border-radius:14px;max-width:440px;width:100%;border:1px solid #333;position:relative;max-height:90vh;overflow-y:auto}
+.close-x{position:absolute;top:10px;right:15px;cursor:pointer;font-size:1.3rem;color:#9aa0b2;background:rgba(255,255,255,.05);width:30px;height:30px;border-radius:50%;display:flex;justify-content:center;align-items:center}
+.modal-box h2{margin-bottom:15px;font-size:1.3rem}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-weight:600;font-size:.85rem;margin-bottom:5px;color:#9aa0b2}
+.fg input,.fg select{width:100%;padding:10px;background:#0b0d15;border:1px solid #333;color:#fff;border-radius:6px;font-size:.95rem}
+.step{display:none}.step.active{display:block}
+.pays{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.pay{padding:6px 10px;border-radius:6px;font-size:.72rem;background:rgba(255,255,255,.05);border:1px solid #333;display:flex;align-items:center;gap:5px}
+.pay i{font-size:.8rem}
+.pay-i{border-color:#b13aee;color:#b13aee}
+.pay-v{border-color:#e30000;color:#e30000}
+.pay-e{border-color:#f15a22;color:#f15a22}
+#invoice{display:none;background:#fff;color:#333;padding:20px;border-radius:10px;margin-top:15px;font-size:.9rem}
+#invoice.active{display:block}
+.admin-overlay{position:fixed;inset:0;background:#0b0d15;z-index:3000;display:none;padding:20px;overflow-y:auto}
+.admin-overlay.active{display:block}
+.admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.admin-login{background:#14161e;padding:40px;border-radius:12px;max-width:350px;width:100%;margin:80px auto;text-align:center;border:1px solid #333}
+.admin-login input{margin:15px 0;padding:12px;width:100%;border-radius:8px;border:1px solid #333;background:#0b0d15;color:#fff}
+.admin-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.admin-tabs button{padding:8px 15px;border-radius:8px;background:#14161e;border:1px solid #333;color:#fff;cursor:pointer;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:5px}
+.admin-tabs button.active{background:#5865f2;border-color:#5865f2}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#14161e;padding:15px;border-radius:10px;text-align:center;border:1px solid #333}
+.stat h4{font-size:.75rem;color:#9aa0b2;margin-bottom:5px;display:flex;justify-content:center;align-items:center;gap:4px}
+.stat span{font-size:1.4rem;font-weight:700}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.8rem;background:#14161e;border-radius:10px;overflow:hidden;min-width:700px}
+.tbl th{background:#1c1f2b;padding:10px;text-align:left;color:#9aa0b2;font-size:.75rem}
+.tbl td{padding:10px;border-bottom:1px solid #222}
+.tbl a{color:#5865f2;text-decoration:underline;word-break:break-all}
+.badge-st{padding:3px 8px;border-radius:20px;font-size:.65rem;font-weight:700;display:inline-block}
+.st-p{background:#faa61a;color:#000}
+.st-c{background:#43b581;color:#fff}
+.st-x{background:#ef4444;color:#fff}
+.btn-s{padding:4px 8px;border:none;border-radius:4px;cursor:pointer;font-size:.68rem;color:#fff;margin:2px;display:inline-flex;align-items:center;gap:3px}
+.btn-e{background:#5865f2}
+.btn-d{background:#ef4444}
+#imgView{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9999;justify-content:center;align-items:center;padding:20px}
+#imgView.active{display:flex}
+#imgView img{max-width:100%;max-height:85vh;border-radius:10px}
+#imgView span{position:absolute;top:20px;right:25px;color:#fff;font-size:2rem;cursor:pointer;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;justify-content:center;align-items:center}
+@media(max-width:768px){
+h1{font-size:2rem}
+.grid{grid-template-columns:1fr}
+nav a span{display:none}
+.card h3{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo" onclick="go('home')">YSOO200</div>
+<nav>
+<a onclick="go('home')"><i class="fas fa-home"></i> <span>الرئيسية</span></a>
+<a onclick="go('shop')"><i class="fas fa-store"></i> <span>الخدمات</span></a>
+<a class="btn-admin" onclick="openAdminPanel()"><i class="fas fa-user-shield"></i> <span>التحكم</span></a>
+</nav>
+</header>
+
+<section id="home" class="active">
+<div class="hero">
+<h1>نمّي حسابك الآن</h1>
+<p>اشتر متابعين حقيقيين لإنستغرام، فيسبوك، وتيك توك. جودة عالية وضمان مدى الحياة.</p>
+<div class="pillars">
+<div class="pillar"><i class="fas fa-headset"></i> دعم 24/7</div>
+<div class="pillar"><i class="fas fa-shield-alt"></i> ضمان مدى الحياة</div>
+<div class="pillar"><i class="fas fa-rocket"></i> تنفيذ فوري</div>
+<a href="https://wa.me/201021126695" target="_blank" class="pillar" style="border-color:#25D366"><i class="fab fa-whatsapp" style="color:#25D366"></i> واتساب</a>
+</div>
+</div>
+</section>
+
+<section id="shop">
+<h2 class="sec">الخدمات والباقات</h2>
+<p class="desc">اختر منصتك الاجتماعية للبدء.</p>
+<div class="filters">
+<button onclick="render('all')"><i class="fas fa-th-large"></i> الكل</button>
+<button class="fb" onclick="render('facebook')"><i class="fab fa-facebook-f"></i> فيسبوك</button>
+<button class="ig" onclick="render('instagram')"><i class="fab fa-instagram"></i> إنستغرام</button>
+<button class="tt" onclick="render('tiktok')"><i class="fab fa-tiktok"></i> تيك توك</button>
+</div>
+<div class="grid" id="grid"></div>
+</section>
+
+<!-- Order Modal -->
+<div class="modal" id="orderModal">
+<div class="modal-box">
+<span class="close-x" onclick="closeModal()"><i class="fas fa-times"></i></span>
+<h2 id="mtitle">طلب المتابعين</h2>
+<div class="step active" id="s1">
+<div class="fg"><label>المنصة</label><select id="oPlat"><option value="instagram">إنستغرام</option><option value="facebook">فيسبوك</option><option value="tiktok">تيك توك</option></select></div>
+<div class="fg"><label>العدد</label><input type="number" id="oQty"></div>
+<div class="fg"><label>السعر (ج.م)</label><input id="oPrice" readonly></div>
+<button class="act" onclick="next(2)">التالي: معلومات الحساب <i class="fas fa-arrow-left"></i></button>
+</div>
+<div class="step" id="s2">
+<div class="fg"><label>رابط الحساب</label><input id="oAcc" placeholder="https://..."></div>
+<div class="fg"><label>اسمك</label><input id="oName" placeholder="اسمك الكامل"></div>
+<div class="fg"><label>رقم التواصل</label><input id="oContact" placeholder="010..."></div>
+<button class="act" onclick="next(3)">مراجعة الطلب <i class="fas fa-arrow-left"></i></button>
+<button onclick="prev(1)" style="width:100%;background:transparent;border:none;color:#9aa0b2;cursor:pointer;margin-top:8px;padding:8px">رجوع</button>
+</div>
+<div class="step" id="s3">
+<div style="background:#0b0d15;padding:15px;border-radius:8px;margin-bottom:12px;font-size:.88rem">
+<p><b>المنصة:</b> <span id="rp"></span></p>
+<p><b>العدد:</b> <span id="rq"></span></p>
+<p><b>السعر:</b> <span id="rpr"></span> ج.م</p>
+<p><b>الحساب:</b> <span id="ra"></span></p>
+<p><b>العميل:</b> <span id="rn"></span></p>
+</div>
+<p style="font-weight:700;margin:10px 0;font-size:.92rem"><i class="fas fa-credit-card"></i> طرق الدفع:</p>
+<div class="pays">
+<span class="pay pay-i"><i class="fab fa-instagram"></i> إنستا باي: 01155325652</span>
+<span class="pay pay-v"><i class="fas fa-mobile-alt"></i> فودافون: 01021126695</span>
+<span class="pay pay-e"><i class="fas fa-mobile-alt"></i> اتصالات: 01155325652</span>
+</div>
+<div class="fg" style="margin-top:12px">
+<label><i class="fas fa-camera"></i> صورة التحويل (اختياري)</label>
+<input type="file" accept="image/*" id="oProof">
+</div>
+<button class="act" onclick="submitOrder()"><i class="fas fa-check"></i> تأكيد الطلب</button>
+<button onclick="prev(2)" style="width:100%;background:transparent;border:none;color:#9aa0b2;cursor:pointer;margin-top:8px;padding:8px">رجوع</button>
+</div>
+<div id="invoice">
+<h3 style="margin-bottom:15px;color:#333"><i class="fas fa-file-invoice"></i> YSOO200 - فاتورة</h3>
+<div id="invBody"></div>
+<div style="margin-top:15px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="act" style="background:#43b581;width:auto;padding:8px 15px" onclick="window.print()"><i class="fas fa-print"></i> طباعة</button>
+<button class="act" style="background:#5865f2;width:auto;padding:8px 15px" onclick="closeModal()">إغلاق</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Image Viewer -->
+<div id="imgView">
+<span onclick="document.getElementById('imgView').classList.remove('active')">&times;</span>
+<img id="bigImg" src="">
+</div>
+
+<!-- Admin Panel -->
+<div class="admin-overlay" id="adminPanel">
+<div class="admin-head">
+<h2><i class="fas fa-user-shield"></i> لوحة التحكم</h2>
+<button onclick="document.getElementById('adminPanel').classList.remove('active')" style="background:#ef4444;color:#fff;border:none;padding:8px 15px;border-radius:6px;cursor:pointer;font-weight:600"><i class="fas fa-sign-out-alt"></i> خروج</button>
+</div>
+<div class="admin-tabs">
+<button class="active" onclick="showTab('overview',this)"><i class="fas fa-chart-pie"></i> الملخص</button>
+<button onclick="showTab('orders',this)"><i class="fas fa-shopping-cart"></i> الطلبات</button>
+<button onclick="showTab('packages',this)"><i class="fas fa-box"></i> الباقات</button>
+</div>
+<div id="adminContent"></div>
+</div>
+
+<script>
+const db = firebase.initializeApp({databaseURL:'https://william-b47a3-default-rtdb.firebaseio.com/'}).database();
+const PASS='yassen 312002';
+let orders=[];
+
+// ========== كل الباقات والأسعار ==========
+let pkgs=[
+// فيسبوك (Facebook) - الأسعار من كودك
+{id:'fb1',platform:'facebook',quantity:500,price:25},{id:'fb2',platform:'facebook',quantity:1000,price:50},
+{id:'fb3',platform:'facebook',quantity:2000,price:100},{id:'fb4',platform:'facebook',quantity:3000,price:150},
+{id:'fb5',platform:'facebook',quantity:4000,price:200},{id:'fb6',platform:'facebook',quantity:5000,price:250},
+{id:'fb7',platform:'facebook',quantity:6000,price:300},{id:'fb8',platform:'facebook',quantity:7000,price:350},
+{id:'fb9',platform:'facebook',quantity:8000,price:400},{id:'fb10',platform:'facebook',quantity:9000,price:450},
+{id:'fb11',platform:'facebook',quantity:10000,price:500},{id:'fb12',platform:'facebook',quantity:11000,price:550},
+{id:'fb13',platform:'facebook',quantity:12000,price:600},{id:'fb14',platform:'facebook',quantity:13000,price:650},
+{id:'fb15',platform:'facebook',quantity:14000,price:700},{id:'fb16',platform:'facebook',quantity:15000,price:750},
+{id:'fb17',platform:'facebook',quantity:16000,price:800},{id:'fb18',platform:'facebook',quantity:17000,price:850},
+{id:'fb19',platform:'facebook',quantity:18000,price:900},{id:'fb20',platform:'facebook',quantity:19000,price:950},
+{id:'fb21',platform:'facebook',quantity:20000,price:1000},
+// إنستغرام (Instagram) - الأسعار من كودك
+{id:'ig1',platform:'instagram',quantity:500,price:50},{id:'ig2',platform:'instagram',quantity:1000,price:100},
+{id:'ig3',platform:'instagram',quantity:2000,price:200},{id:'ig4',platform:'instagram',quantity:3000,price:300},
+{id:'ig5',platform:'instagram',quantity:4000,price:400},{id:'ig6',platform:'instagram',quantity:5000,price:500},
+{id:'ig7',platform:'instagram',quantity:10000,price:1000},
+// تيك توك (TikTok) - الأسعار من الصورة اللي بعتها
+{id:'tt1',platform:'tiktok',quantity:500,price:70},{id:'tt2',platform:'tiktok',quantity:1000,price:155},
+{id:'tt3',platform:'tiktok',quantity:2000,price:310},{id:'tt4',platform:'tiktok',quantity:3000,price:465},
+{id:'tt5',platform:'tiktok',quantity:4000,price:620},{id:'tt6',platform:'tiktok',quantity:5000,price:775},
+{id:'tt7',platform:'tiktok',quantity:6000,price:930},{id:'tt8',platform:'tiktok',quantity:7000,price:1085},
+{id:'tt9',platform:'tiktok',quantity:8000,price:1240},{id:'tt10',platform:'tiktok',quantity:9000,price:1395},
+{id:'tt11',platform:'tiktok',quantity:10000,price:1550},{id:'tt12',platform:'tiktok',quantity:11000,price:1705},
+{id:'tt13',platform:'tiktok',quantity:12000,price:1860},{id:'tt14',platform:'tiktok',quantity:13000,price:2015},
+{id:'tt15',platform:'tiktok',quantity:14000,price:2170},{id:'tt16',platform:'tiktok',quantity:15000,price:2325},
+{id:'tt17',platform:'tiktok',quantity:16000,price:2480},{id:'tt18',platform:'tiktok',quantity:17000,price:2635},
+{id:'tt19',platform:'tiktok',quantity:18000,price:2790},{id:'tt20',platform:'tiktok',quantity:19000,price:2945},
+{id:'tt21',platform:'tiktok',quantity:20000,price:3100}
+];
+
+let curPkg=null;
+
+// التنقل بين الصفحات
+function go(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='shop')render('all');
+  window.scrollTo(0,0);
+}
+
+// عرض الباقات
+function render(f){
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  const list=pkgs.filter(p=>f==='all'?true:p.platform===f);
+  if(list.length===0){g.innerHTML='<p style="color:#9aa0b2;text-align:center;grid-column:1/-1">لا توجد باقات</p>';return;}
+  list.forEach(p=>{
+    let badge='badge-fb',icon='<i class="fab fa-facebook-f"></i>',name='فيسبوك';
+    if(p.platform==='instagram'){badge='badge-ig';icon='<i class="fab fa-instagram"></i>';name='إنستغرام';}
+    else if(p.platform==='tiktok'){badge='badge-tt';icon='<i class="fab fa-tiktok"></i>';name='تيك توك';}
+    g.innerHTML+=`<div class="card"><span class="badge ${badge}">${icon} ${name}</span><h3>${p.quantity.toLocaleString()}</h3><div class="price">${p.price} ج.م</div><div class="info"><i class="fas fa-bolt"></i> فوري</div><button class="act" onclick="openOrd('${p.id}')"><i class="fas fa-shopping-cart"></i> اطلب الآن</button></div>`;
+  });
+}
+
+// فتح نافذة الطلب
+function openOrd(id){
+  curPkg=pkgs.find(p=>p.id===id);
+  let ptName=curPkg.platform==='facebook'?'فيسبوك':curPkg.platform==='instagram'?'إنستغرام':'تيك توك';
+  document.getElementById('mtitle').innerText='طلب '+curPkg.quantity.toLocaleString()+' متابعين - '+ptName;
+  document.getElementById('oPlat').value=curPkg.platform;
+  document.getElementById('oQty').value=curPkg.quantity;
+  document.getElementById('oPrice').value=curPkg.price;
+  document.getElementById('invoice').classList.remove('active');
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s1').classList.add('active');
+  document.getElementById('orderModal').classList.add('active');
+}
+
+function next(n){
+  if(n===2&&!document.getElementById('oQty').value)return alert('حدد العدد');
+  if(n===3){
+    const acc=document.getElementById('oAcc').value,nm=document.getElementById('oName').value,ct=document.getElementById('oContact').value;
+    if(!acc||!nm||!ct)return alert('املأ كل الحقول');
+    let pt=document.getElementById('oPlat').value;
+    let ptAr=pt==='facebook'?'فيسبوك':pt==='instagram'?'إنستغرام':'تيك توك';
+    document.getElementById('rp').innerText=ptAr;
+    document.getElementById('rq').innerText=document.getElementById('oQty').value;
+    document.getElementById('rpr').innerText=document.getElementById('oPrice').value;
+    document.getElementById('ra').innerText=acc;
+    document.getElementById('rn').innerText=nm;
+  }
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+}
+function prev(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+}
+function closeModal(){document.getElementById('orderModal').classList.remove('active');}
+
+// تحويل الصورة
+function toB64(file){return new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(file);});}
+
+// تأكيد الطلب
+async function submitOrder(){
+  const pt=document.getElementById('oPlat').value;
+  const q=document.getElementById('oQty').value;
+  const pr=document.getElementById('oPrice').value;
+  const acc=document.getElementById('oAcc').value;
+  const nm=document.getElementById('oName').value;
+  const ct=document.getElementById('oContact').value;
+  const dt=new Date().toLocaleDateString();
+  const inv='INV-'+Date.now().toString().slice(-6);
+  const fi=document.getElementById('oProof');
+  let proof=null;
+  if(fi.files.length>0)proof=await toB64(fi.files[0]);
+  
+  const o={
+    invoiceNumber:inv,customerName:nm,contact:ct,platform:pt,
+    account:acc,quantity:parseInt(q),price:parseInt(pr),total:parseInt(pr),
+    date:dt,orderStatus:'pending',paymentStatus:'pending',paymentProof:proof
+  };
+  await db.ref('orders').push(o);
+  
+  let ptAr=pt==='facebook'?'فيسبوك':pt==='instagram'?'إنستغرام':'تيك توك';
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('invoice').classList.add('active');
+  document.getElementById('invBody').innerHTML=`
+    <p><b>رقم الفاتورة:</b> ${inv}</p>
+    <p><b>التاريخ:</b> ${dt}</p>
+    <hr style="margin:10px 0;border:none;border-top:1px solid #eee">
+    <p><b>العميل:</b> ${nm}</p>
+    <p><b>رقم التواصل:</b> ${ct}</p>
+    <p><b>الحساب:</b> ${acc}</p>
+    <hr style="margin:10px 0;border:none;border-top:1px solid #eee">
+    <p><b>الخدمة:</b> متابعين ${ptAr}</p>
+    <p><b>العدد:</b> ${q}</p>
+    <p><b>الإجمالي:</b> ${pr} ج.م</p>
+    <p style="margin-top:10px;color:#faa61a"><b>الحالة:</b> قيد الانتظار</p>`;
+  document.getElementById('mtitle').innerText='تم تأكيد الطلب!';
+}
+
+// ========== لوحة التحكم ==========
+function openAdminPanel(){
+  const pw=prompt('كلمة المرور:');
+  if(pw===PASS){
+    document.getElementById('adminPanel').classList.add('active');
+    loadAdmin();
+  }else alert('كلمة مرور خاطئة');
+}
+
+function loadAdmin(){
+  db.ref('orders').on('value',snap=>{
+    orders=[];
+    snap.forEach(c=>orders.push({id:c.key,...c.val()}));
+    orders.reverse();
+    const activeTab=document.querySelector('.admin-tabs button.active');
+    showTab(activeTab?activeTab.dataset.tab:'overview',activeTab);
+  });
+}
+
+function showTab(t,btn){
+  document.querySelectorAll('.admin-tabs button').forEach(b=>b.classList.remove('active'));
+  if(btn){btn.classList.add('active');btn.dataset.tab=t;}
+  const c=document.getElementById('adminContent');
+  
+  if(t==='overview'){
+    const total=orders.length;
+    const pend=orders.filter(o=>o.orderStatus==='pending').length;
+    const comp=orders.filter(o=>o.orderStatus==='completed').length;
+    const sales=orders.filter(o=>o.orderStatus==='completed').reduce((a,o)=>a+o.total,0);
+    const ig=orders.filter(o=>o.platform==='instagram').length;
+    const fb=orders.filter(o=>o.platform==='facebook').length;
+    const tt=orders.filter(o=>o.platform==='tiktok').length;
+    c.innerHTML=`<div class="stats">
+      <div class="stat"><h4><i class="fas fa-shopping-cart"></i> الطلبات</h4><span>${total}</span></div>
+      <div class="stat"><h4><i class="fas fa-clock"></i> قيد الانتظار</h4><span>${pend}</span></div>
+      <div class="stat"><h4><i class="fas fa-check"></i> مكتملة</h4><span>${comp}</span></div>
+      <div class="stat"><h4><i class="fas fa-money-bill"></i> المبيعات</h4><span>${sales} ج.م</span></div>
+      <div class="stat"><h4><i class="fab fa-instagram"></i> إنستغرام</h4><span>${ig}</span></div>
+      <div class="stat"><h4><i class="fab fa-facebook-f"></i> فيسبوك</h4><span>${fb}</span></div>
+      <div class="stat"><h4><i class="fab fa-tiktok"></i> تيك توك</h4><span>${tt}</span></div>
+    </div>`;
+  }else if(t==='orders'){
+    if(orders.length===0){c.innerHTML='<p style="text-align:center;color:#9aa0b2;padding:30px">لا توجد طلبات بعد</p>';return;}
+    let h=`<input placeholder="🔍 بحث بالاسم أو الفاتورة..." oninput="filterOrds(this.value)" style="width:100%;padding:10px;margin-bottom:15px;background:#14161e;border:1px solid #333;color:#fff;border-radius:6px">
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>الفاتورة</th><th>العميل</th><th>رقم التواصل</th><th>الحساب</th><th>المنصة</th><th>العدد</th><th>السعر</th><th>الحالة</th><th>صورة</th><th>إجراءات</th></tr></thead><tbody id="ordersBody">`;
+    orders.forEach(o=>{
+      let ptAr=o.platform==='facebook'?'فيسبوك':o.platform==='instagram'?'إنستغرام':'تيك توك';
+      const proofBtn=o.paymentProof?`<button class="btn-s btn-e" onclick="viewProof('${o.paymentProof}')"><i class="fas fa-image"></i> عرض</button>`:'-';
+      const stc=o.orderStatus==='completed'?'st-c':o.orderStatus==='cancelled'?'st-x':'st-p';
+      h+=`<tr>
+        <td>${o.invoiceNumber}</td>
+        <td>${o.customerName}</td>
+        <td>${o.contact}</td>
+        <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><a href="${o.account}" target="_blank">${o.account}</a></td>
+        <td>${ptAr}</td>
+        <td>${o.quantity}</td>
+        <td>${o.total} ج.م</td>
+        <td><span class="badge-st ${stc}">${o.orderStatus}</span></td>
+        <td>${proofBtn}</td>
+        <td>
+          <button class="btn-s btn-e" onclick="upStat('${o.id}','completed')"><i class="fas fa-check"></i> إكمال</button>
+          <button class="btn-s btn-d" onclick="upStat('${o.id}','cancelled')"><i class="fas fa-times"></i> إلغاء</button>
+        </td>
+      </tr>`;
+    });
+    h+='</tbody></table></div>';
+    c.innerHTML=h;
+  }else if(t==='packages'){
+    let h=`<div class="stats"><div class="stat"><h4><i class="fas fa-box"></i> إجمالي الباقات</h4><span>${pkgs.length}</span></div></div><div class="grid">`;
+    pkgs.forEach(p=>{
+      let badge='badge-fb',name='فيسبوك';
+      if(p.platform==='instagram'){badge='badge-ig';name='إنستغرام';}
+      else if(p.platform==='tiktok'){badge='badge-tt';name='تيك توك';}
+      h+=`<div class="card" style="text-align:right"><span class="badge ${badge}">${name}</span><h3 style="font-size:1.3rem">${p.quantity.toLocaleString()}</h3><div class="price">${p.price} ج.م</div></div>`;
+    });
+    h+='</div>';
+    c.innerHTML=h;
+  }
+}
+
+function filterOrds(v){
+  const r=document.querySelectorAll('#ordersBody tr');
+  r.forEach(x=>{x.style.display=x.innerText.toLowerCase().includes(v.toLowerCase())?'':'none';});
+}
+
+function upStat(id,st){
+  db.ref('orders/'+id).update({orderStatus:st});
+}
+
+function viewProof(src){
+  document.getElementById('bigImg').src=src;
+  document.getElementById('imgView').classList.add('active');
+}
+
+// تحميل أولي
+render('all');
+</script>
+</body>
+</html>.card h3{font-size:2.2rem;margin:15px 0 5px}
 .card .price{color:#9aa0b2;font-weight:600;margin-bottom:5px}
 .card .info{color:#43b581;font-size:.8rem;margin-bottom:15px}
 button.act{background:linear-gradient(135deg,#5865f2,#404eed);border:none;padding:10px;border-radius:8px;color:#fff;width:100%;cursor:pointer;font-weight:700;display:flex;justify-content:center;align-items:center;gap:6px}
