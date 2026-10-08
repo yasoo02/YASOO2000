@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter One Cafe - منيو شبتر وان</title>
+    <!-- خطوط جوجل للتصميم الكلاسيكي -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #f2e3c6;
+            --bg-texture: #e6d2b5;
             --text-color: #2b1d0c;
             --accent-color: #8c5830;
             --dark-brown: #3b2314;
@@ -46,8 +48,8 @@
         }
 
         .logo-badge {
-            width: 110px;
-            height: 110px;
+            width: 100px;
+            height: 100px;
             border: 3px solid var(--dark-brown);
             border-radius: 50%;
             display: flex;
@@ -76,37 +78,7 @@
             font-style: italic;
         }
 
-        .est-text {
-            font-size: 0.9rem;
-            color: var(--dark-brown);
-            margin-top: 8px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        /* زر النسخ العائم */
-        .copy-floating-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: var(--dark-brown);
-            color: #f2e3c6;
-            border: 2px solid var(--border-color);
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-family: 'Cairo', sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .copy-floating-btn:hover {
-            background-color: var(--accent-color);
-            transform: scale(1.05);
-        }
-
+        /* شريط التنقل للأقسام */
         nav.categories-nav {
             display: flex;
             flex-wrap: wrap;
@@ -235,34 +207,31 @@
 </head>
 <body>
 
-    <button class="copy-floating-btn" onclick="copyPageLink()">📋 نسخ رابط المنيو</button>
-
     <header>
         <div class="logo-container">
             <div class="logo-badge">C1</div>
             <h1>CHAPTER ONE CAFÉ</h1>
         </div>
-        <p class="subtitle">كل حكاية .. تستحق فصلاً جميلاً[span_3](start_span)[span_3](end_span) | EVERY STORY DESERVES A BEAUTIFUL CHAPTER[span_4](start_span)[span_4](end_span)</p>
-        <p class="est-text">EST. 2024 - COFFEE .. STORIES .. MEMORIES[span_5](start_span)[span_5](end_span)</p>
+        <p class="subtitle">كل حكاية .. تستحق فصلاً جميلاً | COFFEE .. STORIES .. MEMORIES</p>
     </header>
 
     <nav class="categories-nav">
-        <a href="#hot-drinks">CHAPTER 01: مشروبات ساخنة</a>
-        <a href="#fresh-juices">CHAPTER 02: عصائر فريش</a>
-        <a href="#cold-drinks">CHAPTER 03: آيس كوفي وموهيتو</a>
-        <a href="#milkshakes">CHAPTER 04: ميلك شيك وديزرت</a>
-        <a href="#icecream-drinks">CHAPTER 05: آيس كريم وغازية</a>
+        <a href="#hot-drinks">مشروبات ساخنة</a>
+        <a href="#fresh-juices">عصائر فريش</a>
+        <a href="#cold-drinks">آيس كوفي وموهيتو</a>
+        <a href="#milkshakes">ميلك شيك وديزرت</a>
+        <a href="#icecream-drinks">آيس كريم ومشروبات غازية</a>
         <a href="#smoothies">سموذي</a>
-        <a href="#shisha">CHAPTER 06: الرومات والشيشة</a>
+        <a href="#shisha">الشيشة والروم</a>
     </nav>
 
     <div class="container">
 
-        <!-- Chapter 01 -->
+        <!-- مشروبات ساخنة -->
         <section id="hot-drinks" class="menu-section">
             <div class="section-header">
-                <h2>CHAPTER 01 - مشروبات ساخنة[span_6](start_span)[span_6](end_span)</h2>
-                <span>Hot Drinks - Write your chapter with us[span_7](start_span)[span_7](end_span)</span>
+                <h2>مشروبات ساخنة</h2>
+                <span>Hot Drinks - Chapter 01</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">قهوة تركي سنجل</span><span class="item-price">30 ج.م</span></div>
@@ -284,11 +253,11 @@
             </div>
         </section>
 
-        <!-- Chapter 02 -->
+        <!-- عصائر فريش -->
         <section id="fresh-juices" class="menu-section">
             <div class="section-header">
-                <h2>CHAPTER 02 - عصائر فريش[span_8](start_span)[span_8](end_span)</h2>
-                <span>Fresh Juices - New Chapter, New Flavor[span_9](start_span)[span_9](end_span)</span>
+                <h2>عصائر فريش</h2>
+                <span>Fresh Juices - Chapter 02</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">ليمون</span><span class="item-price">45 ج.م</span></div>
@@ -309,11 +278,11 @@
             </div>
         </section>
 
-        <!-- Chapter 03 -->
+        <!-- آيس كوفي وموهيتو -->
         <section id="cold-drinks" class="menu-section">
             <div class="section-header">
-                <h2>CHAPTER 03 - آيس كوفي وموهيتو[span_10](start_span)[span_10](end_span)</h2>
-                <span>Old Vibes, Timeless Memories[span_11](start_span)[span_11](end_span)</span>
+                <h2>آيس كوفي وموهيتو</h2>
+                <span>Iced Coffee & Mojito - Chapter 03</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">آيس كوفي</span><span class="item-price">55 ج.م</span></div>
@@ -333,11 +302,11 @@
             </div>
         </section>
 
-        <!-- Chapter 04 -->
+        <!-- ميلك شيك وديزرت -->
         <section id="milkshakes" class="menu-section">
             <div class="section-header">
-                <h2>CHAPTER 04 - ميلك شيك & ديزرت[span_12](start_span)[span_12](end_span)</h2>
-                <span>The Last Chapter is Always the Sweetest[span_13](start_span)[span_13](end_span)</span>
+                <h2>ميلك شيك & ديزرت</h2>
+                <span>Milk Shake & Dessert - Chapter 04</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">ميلك شيك أوريو</span><span class="item-price">65 ج.م</span></div>
@@ -357,11 +326,11 @@
             </div>
         </section>
 
-        <!-- Chapter 05 -->
+        <!-- آيس كريم ومشروبات غازية والاضافات -->
         <section id="icecream-drinks" class="menu-section">
             <div class="section-header">
-                <h2>CHAPTER 05 - آيس كريم، مشروبات غازية & الإضافات[span_14](start_span)[span_14](end_span)</h2>
-                <span>Ice Cream, Soft Drinks & Add-ons[span_15](start_span)[span_15](end_span)</span>
+                <h2>آيس كريم، مشروبات غازية & الإضافات</h2>
+                <span>Ice Cream, Soft Drinks & Add-ons - Chapter 05</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">آيس كريم Chapter One</span><span class="item-price">50 ج.م</span></div>
@@ -385,8 +354,8 @@
         <!-- سموذي -->
         <section id="smoothies" class="menu-section">
             <div class="section-header">
-                <h2>سموذي[span_16](start_span)[span_16](end_span)</h2>
-                <span>Smoothies[span_17](start_span)[span_17](end_span)</span>
+                <h2>سموذي</h2>
+                <span>Smoothies</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">سموذي بلوبيري</span><span class="item-price">50 ج.م</span></div>
@@ -398,11 +367,11 @@
             </div>
         </section>
 
-        <!-- Chapter 06 -->
+        <!-- الرومات والشيشة -->
         <section id="shisha" class="menu-section">
             <div class="section-header">
-                <h2>CHAPTER 06 - الرومات & الشيشة[span_18](start_span)[span_18](end_span)</h2>
-                <span>Rooms & Shisha[span_19](start_span)[span_19](end_span)</span>
+                <h2>الرومات & الشيشة</h2>
+                <span>Rooms & Shisha - Chapter 06</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">شيشة قص</span><span class="item-price">15 ج.م</span></div>
@@ -418,27 +387,9 @@
     </div>
 
     <footer>
-        <p>CHAPTER ONE CAFE - EST. 2024[span_20](start_span)[span_20](end_span)[span_21](start_span)[span_21](end_span)</p>
-        <p>شكراً لكونك جزءاً من حكايتنا | Thank you for being part of our story[span_22](start_span)[span_22](end_span)</p>
+        <p>CHAPTER ONE CAFE - EST. 2024</p>
+        <p>شكراً لكونك جزءاً من حكايتنا | Thank you for being part of our story</p>
     </footer>
-
-    <script>
-        function copyPageLink() {
-            const dummy = document.createElement('input');
-            textToCopy = window.location.href;
-            document.body.appendChild(dummy);
-            dummy.value = textToCopy;
-            dummy.select();
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-            
-            const btn = document.querySelector('.copy-floating-btn');
-            btn.textContent = '✅ تم نسخ الرابط!';
-            setTimeout(() => {
-                btn.textContent = '📋 نسخ رابط المنيو';
-            }, 2500);
-        }
-    </script>
 
 </body>
 </html>
