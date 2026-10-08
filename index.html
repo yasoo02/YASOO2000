@@ -78,7 +78,7 @@
             font-style: italic;
         }
 
-        /* شريط التنقل للأقسام */
+        /* شريط التنقل للأقسام - ثابت في الأعلى */
         nav.categories-nav {
             display: flex;
             flex-wrap: wrap;
@@ -86,13 +86,14 @@
             gap: 10px;
             margin-bottom: 40px;
             position: sticky;
-            top: 10px;
-            z-index: 100;
+            top: 0;
+            z-index: 1000;
             background: rgba(242, 227, 198, 0.95);
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
+            padding: 12px 10px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-bottom: 2px solid var(--border-color);
+            backdrop-filter: blur(5px);
         }
 
         nav.categories-nav a {
@@ -124,6 +125,7 @@
             padding: 25px;
             margin-bottom: 40px;
             box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            scroll-margin-top: 80px; /* لضمان عدم تغطية العنوان عند الضغط على الرابط */
         }
 
         .section-header {
