@@ -46,20 +46,22 @@
             margin-bottom: 15px;
         }
 
-        /* شعار محاكي لشعار الـ PDF - يمكنك استبداله بصورة حقيقية */
+        /* تنسيق الشعار الجديد */
         .g1-logo {
-            width: 140px;
-            height: 140px;
+            width: 160px;
+            height: 160px;
             margin-bottom: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
         }
 
         .g1-logo svg {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px #5c3a21, 0 0 0 8px #d4bc96;
         }
 
         h1 {
@@ -168,7 +170,6 @@
             margin-top: 5px;
         }
 
-        /* تنسيق الكلام الإضافي من الـ PDF */
         .decorative-text {
             text-align: center;
             font-family: 'Amiri', serif;
@@ -252,7 +253,7 @@
             h1 { font-size: 1.8rem; }
             section.menu-section { padding: 15px; }
             .menu-grid { grid-template-columns: 1fr; }
-            .g1-logo { width: 100px; height: 100px; }
+            .g1-logo { width: 120px; height: 120px; }
         }
     </style>
 </head>
@@ -260,21 +261,44 @@
 
     <header>
         <div class="logo-container">
-            <!-- شعار محاكي لشعار الـ PDF -->
+            <!-- الشعار الجديد المستوحى من الصورة -->
             <div class="g1-logo">
                 <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="60" cy="60" r="56" fill="#d4bc96" stroke="#3b2314" stroke-width="3"/>
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="#3b2314" stroke-width="1"/>
-                    <!-- الحرف C الكبير -->
-                    <path d="M 45 35 C 25 35, 25 85, 45 85 C 55 85, 60 80, 65 75 L 60 68 C 55 73, 50 76, 45 76 C 32 76, 32 44, 45 44 C 50 44, 55 47, 60 52 L 65 45 C 60 40, 55 35, 45 35 Z" fill="#3b2314"/>
-                    <!-- كوب القهوة داخل الحرف -->
-                    <rect x="35" y="50" width="20" height="15" rx="2" fill="#3b2314"/>
-                    <path d="M 55 53 C 58 53, 58 62, 55 62" fill="none" stroke="#3b2314" stroke-width="2"/>
+                    <defs>
+                        <!-- تدرج لوني ذهبي لمحاكاة المعدن -->
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fdf0b0" />
+                            <stop offset="25%" stop-color="#d4af37" />
+                            <stop offset="50%" stop-color="#aa7c11" />
+                            <stop offset="75%" stop-color="#d4af37" />
+                            <stop offset="100%" stop-color="#fdf0b0" />
+                        </linearGradient>
+                        <!-- تأثير الملمس (Texture) -->
+                        <filter id="roughTexture">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+                            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.15 0" in="noise" result="coloredNoise" />
+                            <feComposite operator="in" in="SourceGraphic" in2="coloredNoise" result="composite" />
+                            <feBlend mode="multiply" in="composite" in2="SourceGraphic" />
+                        </filter>
+                    </defs>
+                    
+                    <!-- الخلفية الداكنة -->
+                    <rect width="120" height="120" rx="60" fill="#1a110a" />
+                    
+                    <!-- الحرف C -->
+                    <path d="M 55 20 C 20 20, 10 50, 10 60 C 10 70, 20 100, 55 100 L 55 85 C 30 85, 25 75, 25 60 C 25 45, 30 35, 55 35 Z" fill="url(#goldGradient)" filter="url(#roughTexture)"/>
+                    
+                    <!-- الرقم 1 -->
+                    <path d="M 80 30 L 95 20 L 95 100 L 75 100 L 75 88 L 85 88 L 85 38 L 75 45 Z" fill="url(#goldGradient)" filter="url(#roughTexture)"/>
+                    
+                    <!-- كوب القهوة -->
+                    <path d="M 35 65 L 70 65 L 65 95 L 40 95 Z" fill="url(#goldGradient)" filter="url(#roughTexture)"/>
+                    <!-- مقبض الكوب -->
+                    <path d="M 70 70 C 80 70, 80 90, 70 90" fill="none" stroke="url(#goldGradient)" stroke-width="6" filter="url(#roughTexture)"/>
+                    
                     <!-- البخار -->
-                    <path d="M 40 45 Q 43 40, 40 35 Q 37 30, 40 25" fill="none" stroke="#3b2314" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M 45 45 Q 48 40, 45 35 Q 42 30, 45 25" fill="none" stroke="#3b2314" stroke-width="2" stroke-linecap="round"/>
-                    <!-- رقم 1 -->
-                    <path d="M 75 35 L 85 30 L 85 85 L 75 85 L 75 40 Z" fill="#3b2314"/>
+                    <path d="M 45 55 Q 55 40 45 25" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round" filter="url(#roughTexture)"/>
+                    <path d="M 55 55 Q 65 40 55 25" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round" filter="url(#roughTexture)"/>
                 </svg>
             </div>
             <h1>CHAPTER ONE CAFÉ</h1>
@@ -541,9 +565,9 @@
     </div>
 
     <footer>
-        <p>CHAPTER ONE CAFE - EST. 2024</p>
+        <p>CHAPTER ONE CAFE - EST. 2027</p>
         <p>شكراً لكونك جزءاً من حكايتنا | Thank you for being part of our story</p>
     </footer>
 
 </body>
-    </html>
+                                           </html>
