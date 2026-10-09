@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter One Cafe - منيو شبتر وان</title>
-    <!-- خطوط جوجل للتصميم الكلاسيكي -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -37,7 +36,6 @@
             padding: 40px 20px;
             border-bottom: 3px double var(--border-color);
             margin-bottom: 30px;
-            position: relative;
         }
 
         .logo-container {
@@ -48,37 +46,20 @@
             margin-bottom: 15px;
         }
 
-        /* تصميم شعار G1 مستوحى من الـ PDF */
+        /* شعار محاكي لشعار الـ PDF - يمكنك استبداله بصورة حقيقية */
         .g1-logo {
-            width: 130px;
-            height: 130px;
-            border: 3px solid var(--dark-brown);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #d4bc96;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15), inset 0 0 15px rgba(92, 58, 33, 0.4);
+            width: 140px;
+            height: 140px;
             margin-bottom: 15px;
-            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .g1-logo span {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            font-weight: bold;
-            color: var(--dark-brown);
-            position: relative;
-            z-index: 2;
-        }
-
-        .g1-logo .coffee-cup-icon {
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.15;
-            z-index: 1;
+        .g1-logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
         }
 
         h1 {
@@ -141,7 +122,6 @@
             overflow: hidden;
         }
 
-        /* تأثير خلفية ورقية قديمة للقسم */
         section.menu-section::before {
             content: '';
             position: absolute;
@@ -160,7 +140,6 @@
             z-index: 1;
         }
 
-        /* تصميم الرسومات المستوحاة */
         .section-illustration {
             display: flex;
             justify-content: center;
@@ -187,6 +166,30 @@
             color: var(--accent-color);
             display: block;
             margin-top: 5px;
+        }
+
+        /* تنسيق الكلام الإضافي من الـ PDF */
+        .decorative-text {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-style: italic;
+            color: var(--accent-color);
+            margin: 15px 0;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .decorative-text-en {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--accent-color);
+            margin: 5px 0 15px 0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
         }
 
         .menu-grid {
@@ -250,7 +253,6 @@
             section.menu-section { padding: 15px; }
             .menu-grid { grid-template-columns: 1fr; }
             .g1-logo { width: 100px; height: 100px; }
-            .g1-logo span { font-size: 3rem; }
         }
     </style>
 </head>
@@ -258,21 +260,27 @@
 
     <header>
         <div class="logo-container">
-            <!-- شعار G1 مستوحى من الغلاف -->
+            <!-- شعار محاكي لشعار الـ PDF -->
             <div class="g1-logo">
-                <span>G1</span>
-                <!-- رسمة كوب قهوة وبخار داخل الشعار -->
-                <svg class="coffee-cup-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--dark-brown)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                    <line x1="6" y1="1" x2="6" y2="4"></line>
-                    <line x1="10" y1="1" x2="10" y2="4"></line>
-                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="56" fill="#d4bc96" stroke="#3b2314" stroke-width="3"/>
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="#3b2314" stroke-width="1"/>
+                    <!-- الحرف C الكبير -->
+                    <path d="M 45 35 C 25 35, 25 85, 45 85 C 55 85, 60 80, 65 75 L 60 68 C 55 73, 50 76, 45 76 C 32 76, 32 44, 45 44 C 50 44, 55 47, 60 52 L 65 45 C 60 40, 55 35, 45 35 Z" fill="#3b2314"/>
+                    <!-- كوب القهوة داخل الحرف -->
+                    <rect x="35" y="50" width="20" height="15" rx="2" fill="#3b2314"/>
+                    <path d="M 55 53 C 58 53, 58 62, 55 62" fill="none" stroke="#3b2314" stroke-width="2"/>
+                    <!-- البخار -->
+                    <path d="M 40 45 Q 43 40, 40 35 Q 37 30, 40 25" fill="none" stroke="#3b2314" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 45 45 Q 48 40, 45 35 Q 42 30, 45 25" fill="none" stroke="#3b2314" stroke-width="2" stroke-linecap="round"/>
+                    <!-- رقم 1 -->
+                    <path d="M 75 35 L 85 30 L 85 85 L 75 85 L 75 40 Z" fill="#3b2314"/>
                 </svg>
             </div>
             <h1>CHAPTER ONE CAFÉ</h1>
         </div>
-        <p class="subtitle">كل حكاية .. تستحق فصلاً جميلاً | COFFEE .. STORIES .. MEMORIES</p>
+        <p class="subtitle">كل حكاية .. تستحق فصلاً جميلاً | EVERY STORY DESERVES A BEAUTIFUL CHAPTER</p>
+        <p class="subtitle" style="font-size: 0.9rem; margin-top: 10px;">قهوة .. حكايات .. ذكريات | COFFEE .. STORIES .. MEMORIES</p>
     </header>
 
     <nav class="categories-nav">
@@ -290,7 +298,6 @@
         <!-- مشروبات ساخنة -->
         <section id="hot-drinks" class="menu-section">
             <div class="section-header">
-                <!-- رسمة مستوحاة: كوب قهوة وبخار وأوراق -->
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24">
                         <path d="M17 8h1a4 4 0 0 1 0 8h-1"></path>
@@ -303,6 +310,8 @@
                 <h2>مشروبات ساخنة</h2>
                 <span>Hot Drinks - Chapter 01</span>
             </div>
+            <div class="decorative-text">"كل فنجان .. بداية حكاية"</div>
+            <div class="decorative-text-en">EVERY CUP IS THE BEGINNING OF A STORY</div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">قهوة تركي سنجل</span><span class="item-price">30 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">قهوة تركي دبل</span><span class="item-price">35 ج.م</span></div>
@@ -321,12 +330,12 @@
                 <div class="menu-item"><span class="item-name">سحلب</span><span class="item-price">50 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">سحلب فواكه</span><span class="item-price">60 ج.م</span></div>
             </div>
+            <div class="decorative-text-en" style="margin-top: 20px;">"Your story starts here" & "Write your chapter with us"</div>
         </section>
 
         <!-- عصائر فريش -->
         <section id="fresh-juices" class="menu-section">
             <div class="section-header">
-                <!-- رسمة مستوحاة: كوب عصير مع شريحة فاكهة -->
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24">
                         <path d="M7 8h10v10a5 5 0 0 1-5 5h0a5 5 0 0 1-5-5V8z"></path>
@@ -340,6 +349,8 @@
                 <h2>عصائر فريش</h2>
                 <span>Fresh Juices - Chapter 02</span>
             </div>
+            <div class="decorative-text">"فصل جديد .. طعم مختلف"</div>
+            <div class="decorative-text-en">NEW CHAPTER .. NEW FLAVOR</div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">ليمون</span><span class="item-price">45 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">ليمون نعناع</span><span class="item-price">50 ج.م</span></div>
@@ -357,12 +368,12 @@
                 <div class="menu-item"><span class="item-name">عنب</span><span class="item-price">35 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">فلوريدا</span><span class="item-price">80 ج.م</span></div>
             </div>
+            <div class="decorative-text-en" style="margin-top: 20px;">"Every cup is a new chapter in your story"</div>
         </section>
 
         <!-- آيس كوفي وموهيتو -->
         <section id="cold-drinks" class="menu-section">
             <div class="section-header">
-                <!-- رسمة مستوحاة: كوب بارد مع مكعبات ثلج -->
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24">
                         <path d="M6 6h12v12a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V6z"></path>
@@ -376,6 +387,8 @@
                 <h2>آيس كوفي وموهيتو</h2>
                 <span>Iced Coffee & Mojito - Chapter 03</span>
             </div>
+            <div class="decorative-text">"أجواء قديمة .. ذكريات لا تُنسى"</div>
+            <div class="decorative-text-en">OLD VIBES .. TIMELESS MEMORIES</div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">آيس كوفي</span><span class="item-price">55 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">آيس لاتيه</span><span class="item-price">60 ج.م</span></div>
@@ -392,12 +405,12 @@
                 <div class="menu-item"><span class="item-name">صن شاين</span><span class="item-price">65 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">بلو أوشن</span><span class="item-price">75 ج.م</span></div>
             </div>
+            <div class="decorative-text-en" style="margin-top: 20px;">"Collect moments not things" | "قهوة.. حكايات.. ذكريات"</div>
         </section>
 
         <!-- ميلك شيك وديزرت -->
         <section id="milkshakes" class="menu-section">
             <div class="section-header">
-                <!-- رسمة مستوحاة: كوب ميلك شيك مع كريمة -->
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24">
                         <path d="M7 10h10l-1 10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2L7 10z"></path>
@@ -411,6 +424,8 @@
                 <h2>ميلك شيك & ديزرت</h2>
                 <span>Milk Shake & Dessert - Chapter 04</span>
             </div>
+            <div class="decorative-text">"كل حكاية .. تستحق فصلاً جميلاً"</div>
+            <div class="decorative-text-en">EVERY STORY DESERVES A BEAUTIFUL CHAPTER</div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">ميلك شيك أوريو</span><span class="item-price">65 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">ميلك شيك بلوبيري</span><span class="item-price">65 ج.م</span></div>
@@ -427,12 +442,13 @@
                 <div class="menu-item"><span class="item-name">براونيز</span><span class="item-price">50 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">تشيز كيك</span><span class="item-price">70 ج.م</span></div>
             </div>
+            <div class="decorative-text" style="margin-top: 20px;">"حكايات تُكتب هنا وتبقى في القلب"</div>
+            <div class="decorative-text-en">"Thank you for being part of our story" | "شكراً لكونك جزءاً من حكايتنا"</div>
         </section>
 
         <!-- آيس كريم ومشروبات غازية والاضافات -->
         <section id="icecream-drinks" class="menu-section">
             <div class="section-header">
-                <!-- رسمة مستوحاة: مخروط آيس كريم -->
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24">
                         <path d="M7 10l5 12 5-12H7z"></path>
@@ -443,6 +459,8 @@
                 <h2>آيس كريم، مشروبات غازية & الإضافات</h2>
                 <span>Ice Cream, Soft Drinks & Add-ons - Chapter 05</span>
             </div>
+            <div class="decorative-text">"كل حكاية تستحق فصلاً جميلاً"</div>
+            <div class="decorative-text-en">EVERY STORY DESERVES A BEAUTIFUL CHAPTER</div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">آيس كريم Chapter One</span><span class="item-price">50 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">بيبسي</span><span class="item-price">30 ج.م</span></div>
@@ -460,12 +478,12 @@
                 <div class="menu-item"><span class="item-name">إضافة بولة آيس كريم</span><span class="item-price">20 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">إضافة شوكولاتة إسبريسو</span><span class="item-price">25 ج.م</span></div>
             </div>
+            <div class="decorative-text" style="margin-top: 20px;">"خليك جزء من الحكاية .. كل فصل من الحكاية يبني شيء جميل"</div>
         </section>
 
         <!-- سموذي -->
         <section id="smoothies" class="menu-section">
             <div class="section-header">
-                <!-- رسمة مستوحاة: كوب سموذي مع فواكه -->
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24">
                         <path d="M5 8h14v10a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z"></path>
@@ -490,7 +508,6 @@
         <!-- الرومات والشيشة -->
         <section id="shisha" class="menu-section">
             <div class="section-header">
-                <!-- رسمة مستوحاة: شيشة -->
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 21v-6"></path>
@@ -506,6 +523,8 @@
                 <h2>الرومات & الشيشة</h2>
                 <span>Rooms & Shisha - Chapter 06</span>
             </div>
+            <div class="decorative-text">"كل حكاية تستحق فصلاً جميلاً"</div>
+            <div class="decorative-text-en">EVERY STORY DESERVES A BEAUTIFUL CHAPTER</div>
             <div class="menu-grid">
                 <div class="menu-item"><span class="item-name">شيشة قص</span><span class="item-price">15 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">شيشة سلوم</span><span class="item-price">20 ج.م</span></div>
@@ -516,6 +535,7 @@
                 <div class="menu-item"><span class="item-name">روم 2 (شاملة بلايستيشن ساعة)</span><span class="item-price">50 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">كارت نت</span><span class="item-price">10 ج.م</span></div>
             </div>
+            <div class="decorative-text-en" style="margin-top: 20px;">"انت جزء من الحكاية"</div>
         </section>
 
     </div>
