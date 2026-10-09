@@ -14,6 +14,7 @@
             --accent-color: #8c5830;
             --dark-brown: #3b2314;
             --border-color: #5c3a21;
+            --gold-accent: #c49a45;
         }
 
         * {
@@ -47,21 +48,37 @@
             margin-bottom: 15px;
         }
 
-        .logo-badge {
-            width: 100px;
-            height: 100px;
+        /* تصميم شعار G1 مستوحى من الـ PDF */
+        .g1-logo {
+            width: 130px;
+            height: 130px;
             border: 3px solid var(--dark-brown);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #d4bc96;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15), inset 0 0 15px rgba(92, 58, 33, 0.4);
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .g1-logo span {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-size: 4rem;
             font-weight: bold;
             color: var(--dark-brown);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .g1-logo .coffee-cup-icon {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
+            z-index: 1;
         }
 
         h1 {
@@ -78,7 +95,6 @@
             font-style: italic;
         }
 
-        /* شريط التنقل للأقسام - يتحرك مع الصفحة ويختفي عند النزول */
         nav.categories-nav {
             display: flex;
             flex-wrap: wrap;
@@ -121,6 +137,18 @@
             padding: 25px;
             margin-bottom: 40px;
             box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثير خلفية ورقية قديمة للقسم */
+        section.menu-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10 10 Q 50 0 90 10 Q 100 50 90 90 Q 50 100 10 90 Q 0 50 10 10" fill="none" stroke="%235c3a21" stroke-width="0.5" opacity="0.05"/></svg>');
+            pointer-events: none;
+            z-index: 0;
         }
 
         .section-header {
@@ -128,6 +156,24 @@
             border-bottom: 2px dashed var(--border-color);
             padding-bottom: 15px;
             margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* تصميم الرسومات المستوحاة */
+        .section-illustration {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .section-illustration svg {
+            width: 60px;
+            height: 60px;
+            stroke: var(--accent-color);
+            stroke-width: 1.5;
+            fill: none;
+            opacity: 0.8;
         }
 
         .section-header h2 {
@@ -147,6 +193,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .menu-item {
@@ -157,12 +205,13 @@
             background: rgba(230, 210, 181, 0.4);
             border-radius: 6px;
             border: 1px solid rgba(92, 58, 33, 0.2);
-            transition: transform 0.2s;
+            transition: transform 0.2s, background 0.2s;
         }
 
         .menu-item:hover {
             transform: translateY(-2px);
-            background: rgba(230, 210, 181, 0.7);
+            background: rgba(230, 210, 181, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .item-name {
@@ -199,6 +248,9 @@
         @media (max-width: 600px) {
             h1 { font-size: 1.8rem; }
             section.menu-section { padding: 15px; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .g1-logo { width: 100px; height: 100px; }
+            .g1-logo span { font-size: 3rem; }
         }
     </style>
 </head>
@@ -206,7 +258,18 @@
 
     <header>
         <div class="logo-container">
-            <div class="logo-badge">C1</div>
+            <!-- شعار G1 مستوحى من الغلاف -->
+            <div class="g1-logo">
+                <span>G1</span>
+                <!-- رسمة كوب قهوة وبخار داخل الشعار -->
+                <svg class="coffee-cup-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--dark-brown)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                    <line x1="6" y1="1" x2="6" y2="4"></line>
+                    <line x1="10" y1="1" x2="10" y2="4"></line>
+                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+            </div>
             <h1>CHAPTER ONE CAFÉ</h1>
         </div>
         <p class="subtitle">كل حكاية .. تستحق فصلاً جميلاً | COFFEE .. STORIES .. MEMORIES</p>
@@ -227,6 +290,16 @@
         <!-- مشروبات ساخنة -->
         <section id="hot-drinks" class="menu-section">
             <div class="section-header">
+                <!-- رسمة مستوحاة: كوب قهوة وبخار وأوراق -->
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17 8h1a4 4 0 0 1 0 8h-1"></path>
+                        <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"></path>
+                        <path d="M6 2v3M10 2v3M14 2v3"></path>
+                        <path d="M2 21h18"></path>
+                        <path d="M5 21v2M19 21v2"></path>
+                    </svg>
+                </div>
                 <h2>مشروبات ساخنة</h2>
                 <span>Hot Drinks - Chapter 01</span>
             </div>
@@ -253,6 +326,17 @@
         <!-- عصائر فريش -->
         <section id="fresh-juices" class="menu-section">
             <div class="section-header">
+                <!-- رسمة مستوحاة: كوب عصير مع شريحة فاكهة -->
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 8h10v10a5 5 0 0 1-5 5h0a5 5 0 0 1-5-5V8z"></path>
+                        <path d="M12 8V3"></path>
+                        <circle cx="12" cy="3" r="1.5"></circle>
+                        <path d="M7 12h10"></path>
+                        <path d="M17 8l3-3"></path>
+                        <path d="M17 8a3 3 0 0 1 3-3"></path>
+                    </svg>
+                </div>
                 <h2>عصائر فريش</h2>
                 <span>Fresh Juices - Chapter 02</span>
             </div>
@@ -278,6 +362,17 @@
         <!-- آيس كوفي وموهيتو -->
         <section id="cold-drinks" class="menu-section">
             <div class="section-header">
+                <!-- رسمة مستوحاة: كوب بارد مع مكعبات ثلج -->
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 6h12v12a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V6z"></path>
+                        <rect x="8" y="8" width="3" height="3"></rect>
+                        <rect x="13" y="10" width="3" height="3"></rect>
+                        <rect x="10" y="13" width="3" height="3"></rect>
+                        <path d="M12 3v3"></path>
+                        <path d="M9 21l-2 3M15 21l2 3"></path>
+                    </svg>
+                </div>
                 <h2>آيس كوفي وموهيتو</h2>
                 <span>Iced Coffee & Mojito - Chapter 03</span>
             </div>
@@ -302,6 +397,17 @@
         <!-- ميلك شيك وديزرت -->
         <section id="milkshakes" class="menu-section">
             <div class="section-header">
+                <!-- رسمة مستوحاة: كوب ميلك شيك مع كريمة -->
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 10h10l-1 10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2L7 10z"></path>
+                        <path d="M12 10V4"></path>
+                        <path d="M10 4h4"></path>
+                        <path d="M12 2v2"></path>
+                        <path d="M8 15h8"></path>
+                        <path d="M9 18h6"></path>
+                    </svg>
+                </div>
                 <h2>ميلك شيك & ديزرت</h2>
                 <span>Milk Shake & Dessert - Chapter 04</span>
             </div>
@@ -326,6 +432,14 @@
         <!-- آيس كريم ومشروبات غازية والاضافات -->
         <section id="icecream-drinks" class="menu-section">
             <div class="section-header">
+                <!-- رسمة مستوحاة: مخروط آيس كريم -->
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 10l5 12 5-12H7z"></path>
+                        <path d="M12 2a5 5 0 0 0-5 5c0 1.5 1 2 1 3h8c0-1 1-1.5 1-3a5 5 0 0 0-5-5z"></path>
+                        <path d="M12 7a2 2 0 0 0-2 2"></path>
+                    </svg>
+                </div>
                 <h2>آيس كريم، مشروبات غازية & الإضافات</h2>
                 <span>Ice Cream, Soft Drinks & Add-ons - Chapter 05</span>
             </div>
@@ -351,6 +465,15 @@
         <!-- سموذي -->
         <section id="smoothies" class="menu-section">
             <div class="section-header">
+                <!-- رسمة مستوحاة: كوب سموذي مع فواكه -->
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5 8h14v10a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z"></path>
+                        <circle cx="12" cy="4" r="2"></circle>
+                        <path d="M8 12h8"></path>
+                        <path d="M8 16h8"></path>
+                    </svg>
+                </div>
                 <h2>سموذي</h2>
                 <span>Smoothies</span>
             </div>
@@ -367,6 +490,19 @@
         <!-- الرومات والشيشة -->
         <section id="shisha" class="menu-section">
             <div class="section-header">
+                <!-- رسمة مستوحاة: شيشة -->
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 21v-6"></path>
+                        <path d="M9 15h6"></path>
+                        <path d="M8 15v-3a4 4 0 0 1 8 0v3"></path>
+                        <path d="M10 5V3"></path>
+                        <path d="M14 5V3"></path>
+                        <path d="M10 5h4"></path>
+                        <path d="M12 6v5"></path>
+                        <path d="M18 10c0 2-2 3-3 5"></path>
+                    </svg>
+                </div>
                 <h2>الرومات & الشيشة</h2>
                 <span>Rooms & Shisha - Chapter 06</span>
             </div>
@@ -376,8 +512,9 @@
                 <div class="menu-item"><span class="item-name">شيشة فواكه</span><span class="item-price">60 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">شيشة فواكه فاخر</span><span class="item-price">80 ج.م</span></div>
                 <div class="menu-item"><span class="item-name">لي طبي</span><span class="item-price">15 ج.م</span></div>
-                <div class="menu-item"><span class="item-name">روم 1 (شاملة بلايستيشن ساعة)</span><span class="item-price">---</span></div>
-                <div class="menu-item"><span class="item-name">روم 2 (شاملة بلايستيشن ساعة)</span><span class="item-price">---</span></div>
+                <div class="menu-item"><span class="item-name">روم 1 (شاملة بلايستيشن ساعة)</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">روم 2 (شاملة بلايستيشن ساعة)</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">كارت نت</span><span class="item-price">10 ج.م</span></div>
             </div>
         </section>
 
@@ -389,4 +526,4 @@
     </footer>
 
 </body>
-</html>
+    </html>
