@@ -6,7 +6,7 @@
     <title>Chapter One Cafe - منيو شبتر وان</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- إضافة مكتبة Firebase -->
+    <!-- مكتبات Firebase الإصدار الثامن -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -223,29 +223,30 @@
             padding-top: 20px;
         }
 
-        .admin-trigger {
-            width: 50px;
-            height: 50px;
+        button.admin-trigger {
+            width: 60px;
+            height: 60px;
             background: var(--dark-brown);
+            border: 2px solid var(--gold-accent);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease, background 0.3s ease;
-            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            transition: transform 0.2s ease, background 0.2s ease;
+            outline: none;
         }
 
-        .admin-trigger:hover {
+        button.admin-trigger:hover {
             transform: scale(1.1);
             background: #5c3a21;
         }
 
-        .admin-trigger span {
-            width: 25px;
+        button.admin-trigger span {
+            width: 24px;
             height: 3px;
             background: #f2e3c6;
             border-radius: 2px;
@@ -514,13 +515,13 @@
             </div>
         </section>
 
-        <!-- زر التعديل -->
+        <!-- زر الأدمن -->
         <div class="admin-controls-container">
-            <div class="admin-trigger" id="admin-trigger" title="لوحة تحكم الأسعار">
+            <button type="button" class="admin-trigger" id="admin-trigger" title="لوحة تحكم الأسعار">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
 
     </div>
@@ -534,7 +535,7 @@
     </footer>
 
     <script>
-        // إعدادات Firebase الخاصة بك
+        // ضع بيانات Firebase الحقيقية الخاصة بك هنا بدلاً من القيم الافتراضية
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_AUTH_DOMAIN",
@@ -545,96 +546,81 @@
             appId: "YOUR_APP_ID"
         };
 
+        // تهيئة Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
         const database = firebase.database();
 
-        // 1. تحميل الأسعار من Firebase أو localStorage كبديل
-        function loadPrices() {
-            try {
-                database.ref('chapterOnePrices').on('value', (snapshot) => {
-                    const savedPrices = snapshot.val() || JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
-                    
+        // 1. الاستماع للتحديثات المباشرة من قاعدة بيانات Firebase (لتظهر الأسعار للجميع فوراً)
+        function listenToPrices() {
+            database.ref('chapterOnePrices').on('value', (snapshot) => {
+                const savedPrices = snapshot.val();
+                if (savedPrices) {
                     document.querySelectorAll('.menu-item').forEach(item => {
                         const name = item.querySelector('.item-name').innerText.trim();
                         const priceEl = item.querySelector('.item-price');
-                        
                         if (savedPrices[name]) {
                             priceEl.innerText = savedPrices[name];
                         }
                     });
-                });
-            } catch (e) {
-                const savedPrices = JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
-                document.querySelectorAll('.menu-item').forEach(item => {
-                    const name = item.querySelector('.item-name').innerText.trim();
-                    const priceEl = item.querySelector('.item-price');
-                    if (savedPrices[name]) {
-                        priceEl.innerText = savedPrices[name];
-                    }
-                });
-            }
+                }
+            }, (error) => {
+                console.error("خطأ في قراءة البيانات من فايربيز: ", error);
+            });
         }
 
-        loadPrices();
+        listenToPrices();
 
         const adminTrigger = document.getElementById('admin-trigger');
         const saveBtn = document.getElementById('save-btn');
-        
-        // كلمة المرور الخاصة بالأدمن
         const ADMIN_PASSWORD = "Ytrewq"; 
 
-        // 2. تفعيل وضع التعديل (تم إصلاح تفاعل النقر هنا)
-        if (adminTrigger) {
-            adminTrigger.addEventListener('click', () => {
-                const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
-                
-                if (userPass === ADMIN_PASSWORD) {
-                    document.querySelectorAll('.item-price').forEach(priceEl => {
-                        priceEl.setAttribute('contenteditable', 'true');
-                        priceEl.classList.add('editable-price');
-                    });
-                    
-                    saveBtn.style.display = 'block'; 
-                    adminTrigger.style.display = 'none'; 
-                    alert("✅ وضع التعديل مُفعل.\nيمكنك الآن النقر على أي سعر لتغييره، ثم اضغط على 'حفظ التعديلات' أسفل الشاشة.");
-                } else if (userPass !== null) {
-                    alert("❌ كلمة المرور غير صحيحة!");
-                }
-            });
-        }
-
-        // 3. حفظ التعديلات محلياً وسحابياً عبر Firebase
-        if (saveBtn) {
-            saveBtn.addEventListener('click', () => {
-                const newPrices = {};
-                
-                document.querySelectorAll('.menu-item').forEach(item => {
-                    const name = item.querySelector('.item-name').innerText.trim();
-                    const price = item.querySelector('.item-price').innerText.trim();
-                    newPrices[name] = price;
+        // 2. تفعيل وضع التعديل للأدمن
+        adminTrigger.onclick = function() {
+            const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
+            
+            if (userPass === ADMIN_PASSWORD) {
+                document.querySelectorAll('.item-price').forEach(priceEl => {
+                    priceEl.setAttribute('contenteditable', 'true');
+                    priceEl.classList.add('editable-price');
                 });
                 
-                localStorage.setItem('chapterOnePrices', JSON.stringify(newPrices));
-                
-                database.ref('chapterOnePrices').set(newPrices)
-                    .then(() => {
-                        document.querySelectorAll('.item-price').forEach(priceEl => {
-                            priceEl.removeAttribute('contenteditable');
-                            priceEl.classList.remove('editable-price');
-                        });
-                        
-                        saveBtn.style.display = 'none'; 
-                        if (adminTrigger) adminTrigger.style.display = 'flex'; 
-                        
-                        alert("تم حفظ ونشر الأسعار الجديدة بنجاح لتظهر لجميع الزوار! 💾🚀");
-                    })
-                    .catch((error) => {
-                        alert("حدث خطأ أثناء الحفظ: " + error.message);
-                    });
+                saveBtn.style.display = 'block'; 
+                adminTrigger.style.display = 'none'; 
+                alert("✅ وضع التعديل مُفعل.\nاضغط على أي سعر لتغييره، ثم اضغط على 'حفظ التعديلات' أسفل الشاشة.");
+            } else if (userPass !== null) {
+                alert("❌ كلمة المرور غير صحيحة!");
+            }
+        };
+
+        // 3. حفظ ونشر التعديلات إلى Firebase
+        saveBtn.onclick = function() {
+            const newPrices = {};
+            
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const name = item.querySelector('.item-name').innerText.trim();
+                const price = item.querySelector('.item-price').innerText.trim();
+                newPrices[name] = price;
             });
-        }
+            
+            // رفع البيانات لـ Firebase
+            database.ref('chapterOnePrices').set(newPrices)
+                .then(() => {
+                    document.querySelectorAll('.item-price').forEach(priceEl => {
+                        priceEl.removeAttribute('contenteditable');
+                        priceEl.classList.remove('editable-price');
+                    });
+                    
+                    saveBtn.style.display = 'none'; 
+                    adminTrigger.style.display = 'flex'; 
+                    
+                    alert("تم حفظ ونشر الأسعار الجديدة على سحابة Firebase بنجاح! 💾🚀");
+                })
+                .catch((error) => {
+                    alert("حدث خطأ أثناء الحفظ في الفايربيز: " + error.message);
+                });
+        };
     </script>
 </body>
 </html>
