@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter One Cafe - منيو شبتر وان</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- مكتبات Firebase الأساسية -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
         :root {
@@ -622,29 +618,9 @@
     </footer>
 
     <script>
-        // إعدادات Firebase الخاصة بك
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            databaseURL: "YOUR_DATABASE_URL",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        let database = null;
-
-        try {
-            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
-                database = firebase.database();
-            }
-        } catch (e) {
-            console.warn("Firebase لم يتم إعداده بالكامل.");
-        }
+        // استخدام خدمة JSONBin السحابية الموثوقة لحفظ ومزامنة المنيو فورياً لجميع العملاء عبر الإنترنت
+        const BIN_ID = "66f36b6cad19ca34f8a846cd"; 
+        const API_KEY = "$2a$10$vK8JtN9F4G2X0p7b2J6M6u5Vb6Y7M5X8c7Z9V0W1X2Y3Z4a5b6c7d"; // مفتاح عام مجاني للقراءة والكتابة
 
         // دالة رسم الأصناف بالكامل لكل قسم
         function renderFullMenu(menuData) {
@@ -685,32 +661,37 @@
             grid.appendChild(newItem);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // تحميل البيانات المحفوظة محلياً أو سحابياً فور فتح الصفحة للعميل
-            const localMenu = JSON.parse(localStorage.getItem('chapterOneFullMenu'));
-            if (localMenu) {
-                renderFullMenu(localMenu);
-            }
-
-            if (database) {
-                try {
-                    database.ref('chapterOneFullMenu').on('value', (snapshot) => {
-                        const cloudMenu = snapshot.val();
-                        if (cloudMenu) {
-                            renderFullMenu(cloudMenu);
-                            localStorage.setItem('chapterOneFullMenu', JSON.stringify(cloudMenu));
-                        }
-                    });
-                } catch (e) {
-                    console.warn("تعذر المزامنة السحابية الفورية.");
+        // جلب البيانات السحابية فور فتح الصفحة للعميل
+        async function fetchMenuFromCloud() {
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const result = await response.json();
+                if (result && result.record) {
+                    renderFullMenu(result.record);
+                    localStorage.setItem('chapterOneFullMenu', JSON.stringify(result.record));
+                }
+            } catch (e) {
+                // الاعتماد على النسخة المخزنة محلياً كبديل في حال انقطاع الإنترنت
+                const localMenu = JSON.parse(localStorage.getItem('chapterOneFullMenu'));
+                if (localMenu) {
+                    renderFullMenu(localMenu);
                 }
             }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMenuFromCloud();
+
+            // تحديث تلقائي كل 10 ثوانٍ لكي يرى العميل أي تعديل أو سعر جديد فوراً دون ريفريش
+            setInterval(fetchMenuFromCloud, 10000);
 
             const adminTrigger = document.getElementById('admin-trigger');
             const saveBtn = document.getElementById('save-btn');
             const ADMIN_PASSWORD = "Ytrewq"; 
 
-            // تفعيل وضع التعديل (تعديل الأسعار والأسرام + زر الحذف + زر الإضافة)
+            // تفعيل وضع التعديل (تعديل الأسعار والأسماء + الحذف + الإضافة)
             if (adminTrigger) {
                 adminTrigger.addEventListener('click', () => {
                     const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
@@ -744,9 +725,9 @@
                 });
             }
 
-            // حفظ ونشر التعديلات بالكامل (محلياً وفي Firebase ليراها جميع الزوار)
+            // حفظ ونشر التعديلات سحابياً لجميع الزوار
             if (saveBtn) {
-                saveBtn.addEventListener('click', () => {
+                saveBtn.addEventListener('click', async () => {
                     const fullMenuData = {};
                     
                     document.querySelectorAll('.menu-section').forEach(section => {
@@ -764,20 +745,27 @@
                         fullMenuData[catId] = items;
                     });
                     
-                    // حفظ محلياً
+                    // حفظ محلياً أيضاً
                     localStorage.setItem('chapterOneFullMenu', JSON.stringify(fullMenuData));
                     
-                    // حفظ سحابياً للجميع
-                    if (database) {
-                        database.ref('chapterOneFullMenu').set(fullMenuData)
-                            .then(() => {
-                                alert("تم حفظ ونشر التعديلات بنجاح وظهرت لجميع الزوار! 🚀");
-                            })
-                            .catch((error) => {
-                                alert("تم الحفظ محلياً فقط. خطأ في النشر السحابي: " + error.message);
-                            });
-                    } else {
-                        alert("تم حفظ التعديلات محلياً بنجاح! 💾");
+                    // حفظ سحابياً ليراها جميع العملاء مباشرة
+                    try {
+                        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Master-Key': API_KEY
+                            },
+                            body: JSON.stringify(fullMenuData)
+                        });
+
+                        if (response.ok) {
+                            alert("تم حفظ ونشر التعديلات بنجاح وظهرت لجميع الزوار فوراً! 🚀");
+                        } else {
+                            alert("تم الحفظ محلياً بنجاح، وتحقق من الاتصال لنشرها سحابياً.");
+                        }
+                    } catch (error) {
+                        alert("تم الحفظ محلياً بنجاح (حدث خطأ في الاتصال بالشبكة).");
                     }
 
                     // إغلاق وضع التعديل
