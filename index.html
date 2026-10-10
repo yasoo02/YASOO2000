@@ -128,15 +128,6 @@
             overflow: hidden;
         }
 
-        section.menu-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10 10 Q 50 0 90 10 Q 100 50 90 90 Q 50 100 10 90 Q 0 50 10 10" fill="none" stroke="%235c3a21" stroke-width="0.5" opacity="0.05"/></svg>');
-            pointer-events: none;
-            z-index: 0;
-        }
-
         .section-header {
             text-align: center;
             border-bottom: 2px dashed var(--border-color);
@@ -172,28 +163,6 @@
             color: var(--accent-color);
             display: block;
             margin-top: 5px;
-        }
-
-        .decorative-text, .decorative-text-en {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            color: var(--accent-color);
-        }
-
-        .decorative-text {
-            font-family: 'Amiri', serif;
-            font-style: italic;
-            margin: 15px 0;
-            font-size: 1.1rem;
-        }
-
-        .decorative-text-en {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            margin: 5px 0 15px 0;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
         }
 
         .menu-grid {
@@ -267,6 +236,7 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, background 0.3s ease;
+            z-index: 100;
         }
 
         .admin-trigger:hover {
@@ -279,6 +249,7 @@
             height: 3px;
             background: #f2e3c6;
             border-radius: 2px;
+            pointer-events: none;
         }
 
         .save-btn {
@@ -370,7 +341,7 @@
 
     <div class="container">
 
-        <!-- الأقسام (نفس الأقسام بدون تغيير) -->
+        <!-- الأقسام -->
         <section id="hot-drinks" class="menu-section">
             <div class="section-header">
                 <div class="section-illustration">
@@ -543,7 +514,7 @@
             </div>
         </section>
 
-        <!-- زر التعديل وضعناه في نهاية المنيو بدلاً من كونه عائماً -->
+        <!-- زر التعديل -->
         <div class="admin-controls-container">
             <div class="admin-trigger" id="admin-trigger" title="لوحة تحكم الأسعار">
                 <span></span>
@@ -554,7 +525,7 @@
 
     </div>
 
-    <!-- زر حفظ التعديلات (سيظهر في المنتصف أسفل الشاشة عند التعديل) -->
+    <!-- زر حفظ التعديلات -->
     <button class="save-btn" id="save-btn">حفظ التعديلات</button>
 
     <footer>
@@ -579,43 +550,43 @@
         }
         const database = firebase.database();
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. تحميل الأسعار من Firebase أو localStorage كبديل
-            function loadPrices() {
-                try {
-                    database.ref('chapterOnePrices').on('value', (snapshot) => {
-                        const savedPrices = snapshot.val() || JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
-                        
-                        document.querySelectorAll('.menu-item').forEach(item => {
-                            const name = item.querySelector('.item-name').innerText.trim();
-                            const priceEl = item.querySelector('.item-price');
-                            
-                            if (savedPrices[name]) {
-                                priceEl.innerText = savedPrices[name];
-                            }
-                        });
-                    });
-                } catch (e) {
-                    const savedPrices = JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
+        // 1. تحميل الأسعار من Firebase أو localStorage كبديل
+        function loadPrices() {
+            try {
+                database.ref('chapterOnePrices').on('value', (snapshot) => {
+                    const savedPrices = snapshot.val() || JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
+                    
                     document.querySelectorAll('.menu-item').forEach(item => {
                         const name = item.querySelector('.item-name').innerText.trim();
                         const priceEl = item.querySelector('.item-price');
+                        
                         if (savedPrices[name]) {
                             priceEl.innerText = savedPrices[name];
                         }
                     });
-                }
+                });
+            } catch (e) {
+                const savedPrices = JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    const name = item.querySelector('.item-name').innerText.trim();
+                    const priceEl = item.querySelector('.item-price');
+                    if (savedPrices[name]) {
+                        priceEl.innerText = savedPrices[name];
+                    }
+                });
             }
+        }
 
-            loadPrices();
+        loadPrices();
 
-            const adminTrigger = document.getElementById('admin-trigger');
-            const saveBtn = document.getElementById('save-btn');
-            
-            // كلمة المرور الخاصة بالأدمن
-            const ADMIN_PASSWORD = "Ytrewq"; 
+        const adminTrigger = document.getElementById('admin-trigger');
+        const saveBtn = document.getElementById('save-btn');
+        
+        // كلمة المرور الخاصة بالأدمن
+        const ADMIN_PASSWORD = "Ytrewq"; 
 
-            // 2. تفعيل وضع التعديل
+        // 2. تفعيل وضع التعديل (تم إصلاح تفاعل النقر هنا)
+        if (adminTrigger) {
             adminTrigger.addEventListener('click', () => {
                 const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
                 
@@ -632,8 +603,10 @@
                     alert("❌ كلمة المرور غير صحيحة!");
                 }
             });
+        }
 
-            // 3. حفظ التعديلات محلياً وسحابياً عبر Firebase
+        // 3. حفظ التعديلات محلياً وسحابياً عبر Firebase
+        if (saveBtn) {
             saveBtn.addEventListener('click', () => {
                 const newPrices = {};
                 
@@ -653,7 +626,7 @@
                         });
                         
                         saveBtn.style.display = 'none'; 
-                        adminTrigger.style.display = 'flex'; 
+                        if (adminTrigger) adminTrigger.style.display = 'flex'; 
                         
                         alert("تم حفظ ونشر الأسعار الجديدة بنجاح لتظهر لجميع الزوار! 💾🚀");
                     })
@@ -661,7 +634,7 @@
                         alert("حدث خطأ أثناء الحفظ: " + error.message);
                     });
             });
-        });
+        }
     </script>
 </body>
 </html>
