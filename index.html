@@ -6,9 +6,9 @@
     <title>Chapter One Cafe - منيو شبتر وان</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- مكتبات Firebase الإصدار الثامن -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- مكتبات Firebase الأساسية -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
         :root {
@@ -128,6 +128,15 @@
             overflow: hidden;
         }
 
+        section.menu-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10 10 Q 50 0 90 10 Q 100 50 90 90 Q 50 100 10 90 Q 0 50 10 10" fill="none" stroke="%235c3a21" stroke-width="0.5" opacity="0.05"/></svg>');
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .section-header {
             text-align: center;
             border-bottom: 2px dashed var(--border-color);
@@ -135,6 +144,21 @@
             margin-bottom: 25px;
             position: relative;
             z-index: 1;
+        }
+
+        .section-illustration {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .section-illustration svg {
+            width: 60px;
+            height: 60px;
+            stroke: var(--accent-color);
+            stroke-width: 1.5;
+            fill: none;
+            opacity: 0.8;
         }
 
         .section-header h2 {
@@ -167,7 +191,6 @@
             border-radius: 6px;
             border: 1px solid rgba(92, 58, 33, 0.2);
             transition: transform 0.2s, background 0.2s;
-            position: relative;
         }
 
         .menu-item:hover {
@@ -191,46 +214,15 @@
             border: 1px solid var(--border-color);
             font-size: 0.95rem;
             white-space: nowrap;
+            transition: all 0.3s ease;
         }
 
         /* --- تنسيقات وضع الأدمن --- */
-        .editable-name, .editable-price {
+        .editable-price {
             background: #ffeaa7 !important;
             border: 2px dashed #d35400 !important;
             cursor: text;
             outline: none;
-        }
-
-        .delete-item-btn {
-            display: none;
-            background: #c0392b;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-left: 8px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .add-item-btn {
-            display: none;
-            margin: 15px auto 0 auto;
-            background: var(--accent-color);
-            color: #fff;
-            border: 1px solid var(--border-color);
-            padding: 6px 15px;
-            border-radius: 6px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .add-item-btn:hover {
-            background: var(--dark-brown);
         }
 
         .admin-controls-container {
@@ -240,73 +232,62 @@
             padding-top: 20px;
         }
 
-        .admin-trigger-btn {
-            width: 55px;
-            height: 55px;
+        .admin-trigger {
+            width: 50px;
+            height: 50px;
             background: var(--dark-brown);
-            border: 2px solid var(--gold-accent);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            transition: transform 0.2s ease, background 0.2s ease;
-            outline: none;
-            padding: 0;
-            margin: 0 auto;
-            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, background 0.3s ease;
         }
 
-        .admin-trigger-btn:hover {
+        .admin-trigger:hover {
             transform: scale(1.1);
             background: #5c3a21;
         }
 
-        .admin-trigger-btn span {
+        .admin-trigger span {
             width: 25px;
             height: 3px;
             background: #f2e3c6;
             border-radius: 2px;
-            display: block;
-            pointer-events: none;
         }
 
-        .admin-actions-bar {
+        .save-btn {
             display: none;
             position: fixed;
             bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            gap: 15px;
-            z-index: 9999;
-        }
-
-        .save-btn, .exit-admin-btn {
-            padding: 12px 25px;
+            background: #27ae60;
+            color: #fff;
+            padding: 12px 30px;
             border-radius: 25px;
             border: none;
             font-family: 'Cairo', sans-serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
+            z-index: 1000;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             transition: background 0.3s ease;
         }
 
-        .save-btn { background: #27ae60; color: #fff; }
-        .save-btn:hover { background: #219653; }
-
-        .exit-admin-btn { background: #c0392b; color: #fff; }
-        .exit-admin-btn:hover { background: #a93226; }
+        .save-btn:hover {
+            background: #219653;
+        }
 
         footer {
             text-align: center;
             padding: 30px 30px 50px 30px;
             border-top: 3px double var(--border-color);
-            margin-top: 40px;
+            margin-top: 10px;
             color: var(--dark-brown);
             font-family: 'Playfair Display', serif;
         }
@@ -365,23 +346,194 @@
         <a href="#shisha">الشيشة والروم</a>
     </nav>
 
-    <!-- الحاوية الأساسية التي سيتم عرض المنيو عليها -->
-    <div class="container" id="menu-container"></div>
+    <div class="container">
 
-    <!-- زر الأدمن (3 شرط فوق بعض) -->
-    <div class="admin-controls-container">
-        <button type="button" class="admin-trigger-btn" id="admin-trigger" title="لوحة تحكم الأدمن">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+        <!-- الأقسام -->
+        <section id="hot-drinks" class="menu-section">
+            <div class="section-header">
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 0 1 0 8h-1"></path><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"></path><path d="M6 2v3M10 2v3M14 2v3"></path><path d="M2 21h18"></path><path d="M5 21v2M19 21v2"></path></svg>
+                </div>
+                <h2>مشروبات ساخنة</h2>
+                <span>Hot Drinks - Chapter 01</span>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><span class="item-name">قهوة تركي سنجل</span><span class="item-price">30 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">قهوة تركي دبل</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">قهوة فرنساوي</span><span class="item-price">40 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">قهوة بندق</span><span class="item-price">45 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شاي</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شاي بحليب</span><span class="item-price">30 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شاي أخضر</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ينسون</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">قرفة</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">قرفة بحليب</span><span class="item-price">30 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">جنزبيل</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">كركديه</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ليمون</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">كوكتيل أعشاب</span><span class="item-price">40 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">سحلب</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">سحلب فواكه</span><span class="item-price">60 ج.م</span></div>
+            </div>
+        </section>
+
+        <section id="fresh-juices" class="menu-section">
+            <div class="section-header">
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24"><path d="M7 8h10v10a5 5 0 0 1-5 5h0a5 5 0 0 1-5-5V8z"></path><path d="M12 8V3"></path><circle cx="12" cy="3" r="1.5"></circle><path d="M7 12h10"></path><path d="M17 8l3-3"></path><path d="M17 8a3 3 0 0 1 3-3"></path></svg>
+                </div>
+                <h2>عصائر فريش</h2>
+                <span>Fresh Juices - Chapter 02</span>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><span class="item-name">ليمون</span><span class="item-price">45 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ليمون نعناع</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">فراولة</span><span class="item-price">60 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">فراولة بلبن</span><span class="item-price">65 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">مانجو</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">برتقال</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">جوافة</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">موز بلبن</span><span class="item-price">60 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">أفوكادو</span><span class="item-price">90 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">كيوي</span><span class="item-price">80 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">مانجو كيوي</span><span class="item-price">80 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">زبادي عسل</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">زبادي فواكه</span><span class="item-price">65 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">عنب</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">فلوريدا</span><span class="item-price">80 ج.م</span></div>
+            </div>
+        </section>
+
+        <section id="cold-drinks" class="menu-section">
+            <div class="section-header">
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24"><path d="M6 6h12v12a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V6z"></path><rect x="8" y="8" width="3" height="3"></rect><rect x="13" y="10" width="3" height="3"></rect><rect x="10" y="13" width="3" height="3"></rect><path d="M12 3v3"></path><path d="M9 21l-2 3M15 21l2 3"></path></svg>
+                </div>
+                <h2>آيس كوفي وموهيتو</h2>
+                <span>Iced Coffee & Mojito - Chapter 03</span>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><span class="item-name">آيس كوفي</span><span class="item-price">55 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">آيس لاتيه</span><span class="item-price">60 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">آيس موكا</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">آيس أمريكانو</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">آيس سبانش لاتيه</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">آيس بول كوفي</span><span class="item-price">100 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">موهيتو كلاسيك</span><span class="item-price">60 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">موهيتو فراولة</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">موهيتو بلوبيري</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">موهيتو ميكس بيري</span><span class="item-price">75 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">موهيتو باشن فروت</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">موهيتو ريدبول</span><span class="item-price">95 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">صن شاين</span><span class="item-price">65 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">بلو أوشن</span><span class="item-price">75 ج.م</span></div>
+            </div>
+        </section>
+
+        <section id="milkshakes" class="menu-section">
+            <div class="section-header">
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24"><path d="M7 10h10l-1 10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2L7 10z"></path><path d="M12 10V4"></path><path d="M10 4h4"></path><path d="M12 2v2"></path><path d="M8 15h8"></path><path d="M9 18h6"></path></svg>
+                </div>
+                <h2>ميلك شيك & ديزرت</h2>
+                <span>Milk Shake & Dessert - Chapter 04</span>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><span class="item-name">ميلك شيك أوريو</span><span class="item-price">65 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ميلك شيك بلوبيري</span><span class="item-price">65 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ميلك شيك ميكس بيري</span><span class="item-price">75 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ميلك شيك لوتس</span><span class="item-price">80 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ميلك شيك كراميل</span><span class="item-price">60 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ميلك شيك نوتيلا</span><span class="item-price">80 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ميلك شيك تشيز</span><span class="item-price">95 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شوكليت فادج</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ريد فلفت</span><span class="item-price">80 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">مولتن كيك</span><span class="item-price">85 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">مولتن لوتس</span><span class="item-price">95 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">مولتن كيت كات</span><span class="item-price">90 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">براونيز</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">تشيز كيك</span><span class="item-price">70 ج.م</span></div>
+            </div>
+        </section>
+
+        <section id="icecream-drinks" class="menu-section">
+            <div class="section-header">
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24"><path d="M7 10l5 12 5-12H7z"></path><path d="M12 2a5 5 0 0 0-5 5c0 1.5 1 2 1 3h8c0-1 1-1.5 1-3a5 5 0 0 0-5-5z"></path><path d="M12 7a2 2 0 0 0-2 2"></path></svg>
+                </div>
+                <h2>آيس كريم، مشروبات غازية & الإضافات</h2>
+                <span>Ice Cream, Soft Drinks & Add-ons - Chapter 05</span>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><span class="item-name">آيس كريم Chapter One</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">بيبسي</span><span class="item-price">30 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">فيروز</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">توب كولا</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">فابوري / سبرايت</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ستينج</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شويبس</span><span class="item-price">30 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">بيريل</span><span class="item-price">35 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">ريدبول</span><span class="item-price">75 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">إضافة فليفر</span><span class="item-price">10 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">إضافة صوص</span><span class="item-price">15 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">إضافة عسل</span><span class="item-price">15 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">إضافة كريمة</span><span class="item-price">15 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">إضافة بولة آيس كريم</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">إضافة شوكولاتة إسبريسو</span><span class="item-price">25 ج.م</span></div>
+            </div>
+        </section>
+
+        <section id="smoothies" class="menu-section">
+            <div class="section-header">
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24"><path d="M5 8h14v10a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z"></path><circle cx="12" cy="4" r="2"></circle><path d="M8 12h8"></path><path d="M8 16h8"></path></svg>
+                </div>
+                <h2>سموذي</h2>
+                <span>Smoothies</span>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><span class="item-name">سموذي بلوبيري</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">سموذي فراولة</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">سموذي مانجو</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">سموذي بطيخ</span><span class="item-price">60 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">سموذي ليمون نعناع</span><span class="item-price">70 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">سموذي خوخ</span><span class="item-price">50 ج.م</span></div>
+            </div>
+        </section>
+
+        <section id="shisha" class="menu-section">
+            <div class="section-header">
+                <div class="section-illustration">
+                    <svg viewBox="0 0 24 24"><path d="M12 21v-6"></path><path d="M9 15h6"></path><path d="M8 15v-3a4 4 0 0 1 8 0v3"></path><path d="M10 5V3"></path><path d="M14 5V3"></path><path d="M10 5h4"></path><path d="M12 6v5"></path><path d="M18 10c0 2-2 3-3 5"></path></svg>
+                </div>
+                <h2>الرومات & الشيشة</h2>
+                <span>Rooms & Shisha - Chapter 06</span>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item"><span class="item-name">شيشة قص</span><span class="item-price">15 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شيشة سلوم</span><span class="item-price">20 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شيشة فواكه</span><span class="item-price">60 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">شيشة فواكه فاخر</span><span class="item-price">80 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">لي طبي</span><span class="item-price">15 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">روم 1 (شاملة بلايستيشن ساعة)</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">روم 2 (شاملة بلايستيشن ساعة)</span><span class="item-price">50 ج.م</span></div>
+                <div class="menu-item"><span class="item-name">كارت نت</span><span class="item-price">10 ج.م</span></div>
+            </div>
+        </section>
+
+        <!-- زر الأدمن -->
+        <div class="admin-controls-container">
+            <div class="admin-trigger" id="admin-trigger" title="لوحة تحكم الأسعار">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
     </div>
 
-    <!-- شريط أزرار التحكم للأدمن أسفل الشاشة -->
-    <div class="admin-actions-bar" id="admin-actions-bar">
-        <button type="button" class="save-btn" id="save-btn">حفظ ونشر التعديلات 💾</button>
-        <button type="button" class="exit-admin-btn" id="exit-admin-btn">إلغاء وخروج ❌</button>
-    </div>
+    <!-- زر حفظ التعديلات -->
+    <button class="save-btn" id="save-btn">حفظ التعديلات</button>
 
     <footer>
         <p>CHAPTER ONE CAFE - EST. 2027</p>
@@ -389,7 +541,7 @@
     </footer>
 
     <script>
-        // إعدادات Firebase الخاصة بك
+        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_AUTH_DOMAIN",
@@ -400,314 +552,113 @@
             appId: "YOUR_APP_ID"
         };
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const database = firebase.database();
+        let database = null;
 
-        // بيانات المنيو الافتراضية كاملة
-        const defaultMenuData = [
-            {
-                id: "hot-drinks",
-                title: "مشروبات ساخنة",
-                subtitle: "Hot Drinks - Chapter 01",
-                items: [
-                    {name: "قهوة تركي سنجل", price: "30 ج.م"},
-                    {name: "قهوة تركي دبل", price: "35 ج.م"},
-                    {name: "قهوة فرنساوي", price: "40 ج.م"},
-                    {name: "قهوة بندق", price: "45 ج.م"},
-                    {name: "شاي", price: "20 ج.م"},
-                    {name: "شاي بحليب", price: "30 ج.م"},
-                    {name: "شاي أخضر", price: "20 ج.م"},
-                    {name: "ينسون", price: "20 ج.م"},
-                    {name: "قرفة", price: "20 ج.م"},
-                    {name: "قرفة بحليب", price: "30 ج.م"},
-                    {name: "جنزبيل", price: "20 ج.م"},
-                    {name: "كركديه", price: "20 ج.م"},
-                    {name: "ليمون", price: "20 ج.م"},
-                    {name: "كوكتيل أعشاب", price: "40 ج.م"},
-                    {name: "سحلب", price: "50 ج.م"},
-                    {name: "سحلب فواكه", price: "60 ج.م"}
-                ]
-            },
-            {
-                id: "fresh-juices",
-                title: "عصائر فريش",
-                subtitle: "Fresh Juices - Chapter 02",
-                items: [
-                    {name: "ليمون", price: "45 ج.م"},
-                    {name: "ليمون نعناع", price: "50 ج.م"},
-                    {name: "فراولة", price: "60 ج.م"},
-                    {name: "فراولة بلبن", price: "65 ج.م"},
-                    {name: "مانجو", price: "70 ج.م"},
-                    {name: "برتقال", price: "50 ج.م"},
-                    {name: "جوافة", price: "50 ج.م"},
-                    {name: "موز بلبن", price: "60 ج.م"},
-                    {name: "أفوكادو", price: "90 ج.م"},
-                    {name: "كيوي", price: "80 ج.م"},
-                    {name: "مانجو كيوي", price: "80 ج.م"},
-                    {name: "زبادي عسل", price: "50 ج.م"},
-                    {name: "زبادي فواكه", price: "65 ج.م"},
-                    {name: "عنب", price: "35 ج.م"},
-                    {name: "فلوريدا", price: "80 ج.م"}
-                ]
-            },
-            {
-                id: "cold-drinks",
-                title: "آيس كوفي وموهيتو",
-                subtitle: "Iced Coffee & Mojito - Chapter 03",
-                items: [
-                    {name: "آيس كوفي", price: "55 ج.م"},
-                    {name: "آيس لاتيه", price: "60 ج.م"},
-                    {name: "آيس موكا", price: "70 ج.م"},
-                    {name: "آيس أمريكانو", price: "35 ج.م"},
-                    {name: "آيس سبانش لاتيه", price: "70 ج.م"},
-                    {name: "آيس بول كوفي", price: "100 ج.م"},
-                    {name: "موهيتو كلاسيك", price: "60 ج.م"},
-                    {name: "موهيتو فراولة", price: "70 ج.م"},
-                    {name: "موهيتو بلوبيري", price: "70 ج.م"},
-                    {name: "موهيتو ميكس بيري", price: "75 ج.م"},
-                    {name: "موهيتو باشن فروت", price: "70 ج.م"},
-                    {name: "موهيتو ريدبول", price: "95 ج.م"},
-                    {name: "صن شاين", price: "65 ج.م"},
-                    {name: "بلو أوشن", price: "75 ج.م"}
-                ]
-            },
-            {
-                id: "milkshakes",
-                title: "ميلك شيك & ديزرت",
-                subtitle: "Milk Shake & Dessert - Chapter 04",
-                items: [
-                    {name: "ميلك شيك أوريو", price: "65 ج.م"},
-                    {name: "ميلك شيك بلوبيري", price: "65 ج.م"},
-                    {name: "ميلك شيك ميكس بيري", price: "75 ج.م"},
-                    {name: "ميلك شيك لوتس", price: "80 ج.م"},
-                    {name: "ميلك شيك كراميل", price: "60 ج.م"},
-                    {name: "ميلك شيك نوتيلا", price: "80 ج.م"},
-                    {name: "ميلك شيك تشيز", price: "95 ج.م"},
-                    {name: "شوكليت فادج", price: "70 ج.م"},
-                    {name: "ريد فلفت", price: "80 ج.م"},
-                    {name: "مولتن كيك", price: "85 ج.م"},
-                    {name: "مولتن لوتس", price: "95 ج.م"},
-                    {name: "مولتن كيت كات", price: "90 ج.م"},
-                    {name: "براونيز", price: "50 ج.م"},
-                    {name: "تشيز كيك", price: "70 ج.م"}
-                ]
-            },
-            {
-                id: "icecream-drinks",
-                title: "آيس كريم، مشروبات غازية & الإضافات",
-                subtitle: "Ice Cream, Soft Drinks & Add-ons - Chapter 05",
-                items: [
-                    {name: "آيس كريم Chapter One", price: "50 ج.م"},
-                    {name: "بيبسي", price: "30 ج.م"},
-                    {name: "فيروز", price: "35 ج.م"},
-                    {name: "توب كولا", price: "35 ج.م"},
-                    {name: "فابوري / سبرايت", price: "35 ج.م"},
-                    {name: "ستينج", price: "35 ج.م"},
-                    {name: "شويبس", price: "30 ج.م"},
-                    {name: "بيريل", price: "35 ج.م"},
-                    {name: "ريدبول", price: "75 ج.م"},
-                    {name: "إضافة فليفر", price: "10 ج.م"},
-                    {name: "إضافة صوص", price: "15 ج.م"},
-                    {name: "إضافة عسل", price: "15 ج.م"},
-                    {name: "إضافة كريمة", price: "15 ج.م"},
-                    {name: "إضافة بولة آيس كريم", price: "20 ج.م"},
-                    {name: "إضافة شوكولاتة إسبريسو", price: "25 ج.م"}
-                ]
-            },
-            {
-                id: "smoothies",
-                title: "سموذي",
-                subtitle: "Smoothies",
-                items: [
-                    {name: "سموذي بلوبيري", price: "50 ج.م"},
-                    {name: "سموذي فراولة", price: "50 ج.م"},
-                    {name: "سموذي مانجو", price: "50 ج.م"},
-                    {name: "سموذي بطيخ", price: "60 ج.م"},
-                    {name: "سموذي ليمون نعناع", price: "70 ج.م"},
-                    {name: "سموذي خوخ", price: "50 ج.م"}
-                ]
-            },
-            {
-                id: "shisha",
-                title: "الرومات & الشيشة",
-                subtitle: "Rooms & Shisha - Chapter 06",
-                items: [
-                    {name: "شيشة قص", price: "15 ج.م"},
-                    {name: "شيشة سلوم", price: "20 ج.م"},
-                    {name: "شيشة فواكه", price: "60 ج.م"},
-                    {name: "شيشة فواكه فاخر", price: "80 ج.م"},
-                    {name: "لي طبي", price: "15 ج.م"},
-                    {name: "روم 1 (شاملة بلايستيشن ساعة)", price: "50 ج.م"},
-                    {name: "روم 2 (شاملة بلايستيشن ساعة)", price: "50 ج.م"},
-                    {name: "كارت نت", price: "10 ج.م"}
-                ]
+        // تهيئة محمية لـ Firebase
+        try {
+            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                database = firebase.database();
             }
-        ];
-
-        let isAdminMode = false;
-
-        // دالة رسم المنيو على الشاشة
-        function renderMenu(menuData) {
-            const container = document.getElementById('menu-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            menuData.forEach(section => {
-                const sectionEl = document.createElement('section');
-                sectionEl.className = 'menu-section';
-                sectionEl.id = section.id;
-
-                let itemsHTML = '';
-                section.items.forEach((item, index) => {
-                    itemsHTML += `
-                        <div class="menu-item" data-index="${index}">
-                            <span class="item-name ${isAdminMode ? 'editable-name' : ''}" ${isAdminMode ? 'contenteditable="true"' : ''}>${item.name}</span>
-                            <div style="display: flex; align-items: center;">
-                                <span class="item-price ${isAdminMode ? 'editable-price' : ''}" ${isAdminMode ? 'contenteditable="true"' : ''}>${item.price}</span>
-                                <button type="button" class="delete-item-btn" onclick="deleteItem('${section.id}', ${index})" ${isAdminMode ? 'style="display:flex;"' : ''}>×</button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                sectionEl.innerHTML = `
-                    <div class="section-header">
-                        <h2>${section.title}</h2>
-                        <span>${section.subtitle}</span>
-                    </div>
-                    <div class="menu-grid">
-                        ${itemsHTML}
-                    </div>
-                    <button type="button" class="add-item-btn" onclick="addNewItem('${section.id}')" ${isAdminMode ? 'style="display:block;"' : ''}>+ إضافة صنف جديد لهذا القسم</button>
-                `;
-                container.appendChild(sectionEl);
-            });
+        } catch (e) {
+            console.warn("Firebase لم يتم إعداده بالكامل بعد.");
         }
 
-        // قراءة البيانات من Firebase أو إظهار الافتراضية
-        function initDatabaseListener() {
-            database.ref('chapterOneMenu').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    renderMenu(data);
-                } else {
-                    database.ref('chapterOneMenu').set(defaultMenuData);
-                    renderMenu(defaultMenuData);
-                }
-            }, (error) => {
-                console.warn("استخدام الداتا المحلية لخطأ في الاتصال بالفايربيز");
-                renderMenu(defaultMenuData);
-            });
-        }
-
-        // تشغيل الجلب فور فتح الصفحة
-        initDatabaseListener();
-
-        // إضافة صنف جديد
-        window.addNewItem = function(sectionId) {
-            database.ref('chapterOneMenu').once('value', (snapshot) => {
-                let menuData = snapshot.val() || defaultMenuData;
-                const section = menuData.find(s => s.id === sectionId);
-                if (section) {
-                    section.items.push({ name: "اسم الصنف الجديد", price: "0 ج.م" });
-                    database.ref('chapterOneMenu').set(menuData).then(() => {
-                        setTimeout(() => enableAdminModeUI(), 150);
-                    });
-                }
-            });
-        };
-
-        // حذف صنف
-        window.deleteItem = function(sectionId, itemIndex) {
-            if (confirm("هل أنت متأكد من حذف هذا الصنف؟")) {
-                database.ref('chapterOneMenu').once('value', (snapshot) => {
-                    let menuData = snapshot.val() || defaultMenuData;
-                    const section = menuData.find(s => s.id === sectionId);
-                    if (section) {
-                        section.items.splice(itemIndex, 1);
-                        database.ref('chapterOneMenu').set(menuData).then(() => {
-                            setTimeout(() => enableAdminModeUI(), 150);
-                        });
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. تحميل الأسعار من localStorage أو Firebase
+            function applyPrices(savedPrices) {
+                if (!savedPrices) return;
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    const name = item.querySelector('.item-name').innerText.trim();
+                    const priceEl = item.querySelector('.item-price');
+                    if (savedPrices[name]) {
+                        priceEl.innerText = savedPrices[name];
                     }
                 });
             }
-        };
 
-        // تفعيل زر الأدمن (3 شرط)
-        const adminTrigger = document.getElementById('admin-trigger');
-        const adminActionsBar = document.getElementById('admin-actions-bar');
-        const saveBtn = document.getElementById('save-btn');
-        const exitAdminBtn = document.getElementById('exit-admin-btn');
-        const ADMIN_PASSWORD = "Ytrewq";
+            // تطبيق المحفوظ محلياً فوراً
+            const localPrices = JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
+            applyPrices(localPrices);
 
-        if (adminTrigger) {
-            adminTrigger.onclick = function(e) {
-                e.preventDefault();
-                const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
-                if (userPass === ADMIN_PASSWORD) {
-                    enableAdminModeUI();
-                    alert("✅ وضع التعديل مُفعل.\nيمكنك الآن تعديل الأسماء والأسعار مباشرة، أو حذف وإضافة أصناف، ثم اضغط على زر الحفظ الأخضر أسفل الشاشة.");
-                } else if (userPass !== null) {
-                    alert("❌ كلمة المرور غير صحيحة!");
-                }
-            };
-        }
-
-        function enableAdminModeUI() {
-            isAdminMode = true;
-            database.ref('chapterOneMenu').once('value', (snapshot) => {
-                const currentData = snapshot.val() || defaultMenuData;
-                renderMenu(currentData);
-                adminTrigger.style.display = 'none';
-                adminActionsBar.style.display = 'flex';
-            });
-        }
-
-        function getCurrentDOMData() {
-            let menuData = [];
-            document.querySelectorAll('.menu-section').forEach(sectionEl => {
-                const id = sectionEl.id;
-                const title = sectionEl.querySelector('.section-header h2').innerText;
-                const subtitle = sectionEl.querySelector('.section-header span').innerText;
-                let items = [];
-                sectionEl.querySelectorAll('.menu-item').forEach(itemEl => {
-                    const name = itemEl.querySelector('.item-name').innerText.trim();
-                    const price = itemEl.querySelector('.item-price').innerText.trim();
-                    items.push({ name, price });
-                });
-                menuData.push({ id, title, subtitle, items });
-            });
-            return menuData;
-        }
-
-        // حفظ التعديلات ونشرها للسحابة
-        if (saveBtn) {
-            saveBtn.onclick = function() {
-                const updatedMenuData = getCurrentDOMData();
-                database.ref('chapterOneMenu').set(updatedMenuData)
-                    .then(() => {
-                        isAdminMode = false;
-                        adminActionsBar.style.display = 'none';
-                        adminTrigger.style.display = 'flex';
-                        alert("تم حفظ ونشر التعديلات على سحابة Firebase بنجاح لتظهر لجميع الزوار! 💾🚀");
-                    })
-                    .catch((error) => {
-                        alert("حدث خطأ أثناء الحفظ بالسحابة: " + error.message);
+            // جلب من Firebase إن وجد
+            if (database) {
+                try {
+                    database.ref('chapterOnePrices').on('value', (snapshot) => {
+                        const cloudPrices = snapshot.val();
+                        if (cloudPrices) {
+                            applyPrices(cloudPrices);
+                            localStorage.setItem('chapterOnePrices', JSON.stringify(cloudPrices));
+                        }
                     });
-            };
-        }
+                } catch (e) {
+                    console.warn("تعذر الجلب من Firebase.");
+                }
+            }
 
-        // الخروج من وضع الأدمن دون حفظ
-        if (exitAdminBtn) {
-            exitAdminBtn.onclick = function() {
-                isAdminMode = false;
-                adminActionsBar.style.display = 'none';
-                adminTrigger.style.display = 'flex';
-                initDatabaseListener();
-            };
-        }
+            const adminTrigger = document.getElementById('admin-trigger');
+            const saveBtn = document.getElementById('save-btn');
+            const ADMIN_PASSWORD = "Ytrewq"; 
+
+            // 2. تفعيل وضع التعديل عند الضغط على زر الأدمن
+            if (adminTrigger) {
+                adminTrigger.addEventListener('click', () => {
+                    const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
+                    
+                    if (userPass === ADMIN_PASSWORD) {
+                        document.querySelectorAll('.item-price').forEach(priceEl => {
+                            priceEl.setAttribute('contenteditable', 'true');
+                            priceEl.classList.add('editable-price');
+                        });
+                        
+                        saveBtn.style.display = 'block'; 
+                        adminTrigger.style.display = 'none'; 
+                        alert("✅ وضع التعديل مُفعل.\nيمكنك الآن النقر على أي سعر لتغييره، ثم اضغط على 'حفظ التعديلات' أسفل الشاشة.");
+                    } else if (userPass !== null) {
+                        alert("❌ كلمة المرور غير صحيحة!");
+                    }
+                });
+            }
+
+            // 3. حفظ التعديلات
+            if (saveBtn) {
+                saveBtn.addEventListener('click', () => {
+                    const newPrices = {};
+                    
+                    document.querySelectorAll('.menu-item').forEach(item => {
+                        const name = item.querySelector('.item-name').innerText.trim();
+                        const price = item.querySelector('.item-price').innerText.trim();
+                        newPrices[name] = price;
+                    });
+                    
+                    // حفظ محلياً دائماً
+                    localStorage.setItem('chapterOnePrices', JSON.stringify(newPrices));
+                    
+                    // حفظ سحابياً إن كان فايربيس متصلاً
+                    if (database) {
+                        database.ref('chapterOnePrices').set(newPrices)
+                            .then(() => {
+                                alert("تم حفظ ونشر الأسعار بنجاح! 💾🚀");
+                            })
+                            .catch((error) => {
+                                alert("تم الحفظ محلياً فقط. (لم يتم الحفظ سحابياً: " + error.message + ")");
+                            });
+                    } else {
+                        alert("تم حفظ الأسعار بنجاح! 💾");
+                    }
+
+                    document.querySelectorAll('.item-price').forEach(priceEl => {
+                        priceEl.removeAttribute('contenteditable');
+                        priceEl.classList.remove('editable-price');
+                    });
+                    
+                    saveBtn.style.display = 'none'; 
+                    adminTrigger.style.display = 'flex'; 
+                });
+            }
+        });
     </script>
 </body>
 </html>
