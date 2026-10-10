@@ -216,43 +216,6 @@
             outline: none;
         }
 
-        .admin-controls-container {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0 20px 0;
-            padding-top: 20px;
-        }
-
-        button.admin-trigger {
-            width: 60px;
-            height: 60px;
-            background: var(--dark-brown);
-            border: 2px solid var(--gold-accent);
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            transition: transform 0.2s ease, background 0.2s ease;
-            outline: none;
-        }
-
-        button.admin-trigger:hover {
-            transform: scale(1.1);
-            background: #5c3a21;
-        }
-
-        button.admin-trigger span {
-            width: 24px;
-            height: 3px;
-            background: #f2e3c6;
-            border-radius: 2px;
-            pointer-events: none;
-        }
-
         .save-btn {
             display: none;
             position: fixed;
@@ -268,7 +231,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
-            z-index: 1000;
+            z-index: 9999;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             transition: background 0.3s ease;
         }
@@ -281,9 +244,24 @@
             text-align: center;
             padding: 30px 30px 50px 30px;
             border-top: 3px double var(--border-color);
-            margin-top: 10px;
+            margin-top: 40px;
             color: var(--dark-brown);
             font-family: 'Playfair Display', serif;
+        }
+
+        /* رابط سري للأدمن في الفوتر لضمان عمله 100% بدون أي تداخل */
+        .admin-link {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            cursor: pointer;
+            text-decoration: underline;
+            opacity: 0.7;
+        }
+        .admin-link:hover {
+            opacity: 1;
+            color: var(--dark-brown);
         }
 
         @media (max-width: 600px) {
@@ -515,27 +493,22 @@
             </div>
         </section>
 
-        <!-- زر الأدمن -->
-        <div class="admin-controls-container">
-            <button type="button" class="admin-trigger" id="admin-trigger" title="لوحة تحكم الأسعار">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-
     </div>
 
     <!-- زر حفظ التعديلات -->
-    <button class="save-btn" id="save-btn">حفظ التعديلات</button>
+    <button class="save-btn" id="save-btn">حفظ التعديلات ونشرها</button>
 
     <footer>
         <p>CHAPTER ONE CAFE - EST. 2027</p>
         <p>شكراً لكونك جزءاً من حكايتنا | Thank you for being part of our story</p>
+        <!-- رابط تفعيل لوحة التحكم في أسفل الصفحة لضمان استجابته بنسبة 100% -->
+        <div>
+            <span id="admin-trigger" class="admin-link">تسجيل دخول الأدمن</span>
+        </div>
     </footer>
 
     <script>
-        // ضع بيانات Firebase الحقيقية الخاصة بك هنا بدلاً من القيم الافتراضية
+        // إعدادات Firebase الخاصة بك
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_AUTH_DOMAIN",
@@ -552,32 +525,26 @@
         }
         const database = firebase.database();
 
-        // 1. الاستماع للتحديثات المباشرة من قاعدة بيانات Firebase (لتظهر الأسعار للجميع فوراً)
-        function listenToPrices() {
-            database.ref('chapterOnePrices').on('value', (snapshot) => {
-                const savedPrices = snapshot.val();
-                if (savedPrices) {
-                    document.querySelectorAll('.menu-item').forEach(item => {
-                        const name = item.querySelector('.item-name').innerText.trim();
-                        const priceEl = item.querySelector('.item-price');
-                        if (savedPrices[name]) {
-                            priceEl.innerText = savedPrices[name];
-                        }
-                    });
-                }
-            }, (error) => {
-                console.error("خطأ في قراءة البيانات من فايربيز: ", error);
-            });
-        }
-
-        listenToPrices();
+        // 1. الاستماع للأسعار من Firebase وتحديثها أوتوماتيكياً للجميع
+        database.ref('chapterOnePrices').on('value', (snapshot) => {
+            const savedPrices = snapshot.val();
+            if (savedPrices) {
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    const name = item.querySelector('.item-name').innerText.trim();
+                    const priceEl = item.querySelector('.item-price');
+                    if (savedPrices[name]) {
+                        priceEl.innerText = savedPrices[name];
+                    }
+                });
+            }
+        });
 
         const adminTrigger = document.getElementById('admin-trigger');
         const saveBtn = document.getElementById('save-btn');
         const ADMIN_PASSWORD = "Ytrewq"; 
 
-        // 2. تفعيل وضع التعديل للأدمن
-        adminTrigger.onclick = function() {
+        // 2. تفعيل وضع التعديل عند الضغط على الرابط في الفوتر
+        adminTrigger.addEventListener('click', () => {
             const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
             
             if (userPass === ADMIN_PASSWORD) {
@@ -588,14 +555,14 @@
                 
                 saveBtn.style.display = 'block'; 
                 adminTrigger.style.display = 'none'; 
-                alert("✅ وضع التعديل مُفعل.\nاضغط على أي سعر لتغييره، ثم اضغط على 'حفظ التعديلات' أسفل الشاشة.");
+                alert("✅ وضع التعديل مُفعل.\nاضغط على أي سعر لتغييره، ثم اضغط على 'حفظ التعديلات ونشرها' أسفل الشاشة.");
             } else if (userPass !== null) {
                 alert("❌ كلمة المرور غير صحيحة!");
             }
-        };
+        });
 
         // 3. حفظ ونشر التعديلات إلى Firebase
-        saveBtn.onclick = function() {
+        saveBtn.addEventListener('click', () => {
             const newPrices = {};
             
             document.querySelectorAll('.menu-item').forEach(item => {
@@ -604,7 +571,6 @@
                 newPrices[name] = price;
             });
             
-            // رفع البيانات لـ Firebase
             database.ref('chapterOnePrices').set(newPrices)
                 .then(() => {
                     document.querySelectorAll('.item-price').forEach(priceEl => {
@@ -613,14 +579,14 @@
                     });
                     
                     saveBtn.style.display = 'none'; 
-                    adminTrigger.style.display = 'flex'; 
+                    adminTrigger.style.display = 'inline-block'; 
                     
-                    alert("تم حفظ ونشر الأسعار الجديدة على سحابة Firebase بنجاح! 💾🚀");
+                    alert("تم حفظ ونشر الأسعار الجديدة على قاعدة بيانات Firebase بنجاح! 💾🚀");
                 })
                 .catch((error) => {
-                    alert("حدث خطأ أثناء الحفظ في الفايربيز: " + error.message);
+                    alert("حدث خطأ أثناء الحفظ: " + error.message);
                 });
-        };
+        });
     </script>
 </body>
 </html>
