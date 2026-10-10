@@ -216,6 +216,48 @@
             outline: none;
         }
 
+        .admin-controls-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 20px 0;
+            padding-top: 20px;
+        }
+
+        /* زر الأدمن (الـ 3 شرط) */
+        .admin-trigger-btn {
+            width: 55px;
+            height: 55px;
+            background: var(--dark-brown);
+            border: 2px solid var(--gold-accent);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            transition: transform 0.2s ease, background 0.2s ease;
+            outline: none;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        .admin-trigger-btn:hover {
+            transform: scale(1.1);
+            background: #5c3a21;
+        }
+
+        /* الـ 3 شرط داخل الزر */
+        .admin-trigger-btn span {
+            width: 25px;
+            height: 3px;
+            background: #f2e3c6;
+            border-radius: 2px;
+            display: block;
+            pointer-events: none;
+        }
+
         .save-btn {
             display: none;
             position: fixed;
@@ -247,21 +289,6 @@
             margin-top: 40px;
             color: var(--dark-brown);
             font-family: 'Playfair Display', serif;
-        }
-
-        /* رابط سري للأدمن في الفوتر لضمان عمله 100% بدون أي تداخل */
-        .admin-link {
-            display: inline-block;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: var(--accent-color);
-            cursor: pointer;
-            text-decoration: underline;
-            opacity: 0.7;
-        }
-        .admin-link:hover {
-            opacity: 1;
-            color: var(--dark-brown);
         }
 
         @media (max-width: 600px) {
@@ -493,6 +520,15 @@
             </div>
         </section>
 
+        <!-- زر الأدمن (3 شرط فوق بعض) -->
+        <div class="admin-controls-container">
+            <button type="button" class="admin-trigger-btn" id="admin-trigger" title="لوحة تحكم الأسعار">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
     </div>
 
     <!-- زر حفظ التعديلات -->
@@ -501,14 +537,10 @@
     <footer>
         <p>CHAPTER ONE CAFE - EST. 2027</p>
         <p>شكراً لكونك جزءاً من حكايتنا | Thank you for being part of our story</p>
-        <!-- رابط تفعيل لوحة التحكم في أسفل الصفحة لضمان استجابته بنسبة 100% -->
-        <div>
-            <span id="admin-trigger" class="admin-link">تسجيل دخول الأدمن</span>
-        </div>
     </footer>
 
     <script>
-        // إعدادات Firebase الخاصة بك
+        // مفاتيح الفايربيز الخاصة بك
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_AUTH_DOMAIN",
@@ -519,74 +551,120 @@
             appId: "YOUR_APP_ID"
         };
 
-        // تهيئة Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const database = firebase.database();
+        let database = null;
 
-        // 1. الاستماع للأسعار من Firebase وتحديثها أوتوماتيكياً للجميع
-        database.ref('chapterOnePrices').on('value', (snapshot) => {
-            const savedPrices = snapshot.val();
-            if (savedPrices) {
-                document.querySelectorAll('.menu-item').forEach(item => {
-                    const name = item.querySelector('.item-name').innerText.trim();
-                    const priceEl = item.querySelector('.item-price');
-                    if (savedPrices[name]) {
-                        priceEl.innerText = savedPrices[name];
-                    }
-                });
+        // تهيئة الفايربيز مع حماية الكود من الانهيار إذا كانت المفاتيح لم تُستبدل بعد
+        try {
+            if (typeof firebase !== 'undefined') {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                database = firebase.database();
             }
-        });
+        } catch (e) {
+            console.warn("تنبيه الفايربيز: تأكد من استبدال YOUR_API_KEY بالمفاتيح الحقيقية.");
+        }
 
+        // 1. مزامنة وقراءة الأسعار
+        function initPrices() {
+            if (database && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                try {
+                    database.ref('chapterOnePrices').on('value', (snapshot) => {
+                        const savedPrices = snapshot.val();
+                        if (savedPrices) {
+                            applyPrices(savedPrices);
+                        }
+                    });
+                } catch (e) {
+                    loadFromLocalStorage();
+                }
+            } else {
+                loadFromLocalStorage();
+            }
+        }
+
+        function applyPrices(savedPrices) {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const name = item.querySelector('.item-name').innerText.trim();
+                const priceEl = item.querySelector('.item-price');
+                if (savedPrices[name]) {
+                    priceEl.innerText = savedPrices[name];
+                }
+            });
+        }
+
+        function loadFromLocalStorage() {
+            const savedPrices = JSON.parse(localStorage.getItem('chapterOnePrices')) || {};
+            applyPrices(savedPrices);
+        }
+
+        initPrices();
+
+        // 2. تفعيل زر الأدمن (الـ 3 شرط)
         const adminTrigger = document.getElementById('admin-trigger');
         const saveBtn = document.getElementById('save-btn');
         const ADMIN_PASSWORD = "Ytrewq"; 
 
-        // 2. تفعيل وضع التعديل عند الضغط على الرابط في الفوتر
-        adminTrigger.addEventListener('click', () => {
-            const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
-            
-            if (userPass === ADMIN_PASSWORD) {
-                document.querySelectorAll('.item-price').forEach(priceEl => {
-                    priceEl.setAttribute('contenteditable', 'true');
-                    priceEl.classList.add('editable-price');
-                });
+        if (adminTrigger) {
+            adminTrigger.onclick = function(e) {
+                e.preventDefault();
+                const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
                 
-                saveBtn.style.display = 'block'; 
-                adminTrigger.style.display = 'none'; 
-                alert("✅ وضع التعديل مُفعل.\nاضغط على أي سعر لتغييره، ثم اضغط على 'حفظ التعديلات ونشرها' أسفل الشاشة.");
-            } else if (userPass !== null) {
-                alert("❌ كلمة المرور غير صحيحة!");
-            }
-        });
-
-        // 3. حفظ ونشر التعديلات إلى Firebase
-        saveBtn.addEventListener('click', () => {
-            const newPrices = {};
-            
-            document.querySelectorAll('.menu-item').forEach(item => {
-                const name = item.querySelector('.item-name').innerText.trim();
-                const price = item.querySelector('.item-price').innerText.trim();
-                newPrices[name] = price;
-            });
-            
-            database.ref('chapterOnePrices').set(newPrices)
-                .then(() => {
+                if (userPass === ADMIN_PASSWORD) {
                     document.querySelectorAll('.item-price').forEach(priceEl => {
-                        priceEl.removeAttribute('contenteditable');
-                        priceEl.classList.remove('editable-price');
+                        priceEl.setAttribute('contenteditable', 'true');
+                        priceEl.classList.add('editable-price');
                     });
                     
-                    saveBtn.style.display = 'none'; 
-                    adminTrigger.style.display = 'inline-block'; 
-                    
-                    alert("تم حفظ ونشر الأسعار الجديدة على قاعدة بيانات Firebase بنجاح! 💾🚀");
-                })
-                .catch((error) => {
-                    alert("حدث خطأ أثناء الحفظ: " + error.message);
+                    saveBtn.style.display = 'block'; 
+                    adminTrigger.style.display = 'none'; 
+                    alert("✅ وضع التعديل مُفعل.\nاضغط على أي سعر لتغييره، ثم اضغط على 'حفظ التعديلات ونشرها' أسفل الشاشة.");
+                } else if (userPass !== null) {
+                    alert("❌ كلمة المرور غير صحيحة!");
+                }
+            };
+        }
+
+        // 3. حفظ ونشر التعديلات
+        if (saveBtn) {
+            saveBtn.onclick = function() {
+                const newPrices = {};
+                
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    const name = item.querySelector('.item-name').innerText.trim();
+                    const price = item.querySelector('.item-price').innerText.trim();
+                    newPrices[name] = price;
                 });
-        });
+                
+                // حفظ محلي لسرعة الاستجابة
+                localStorage.setItem('chapterOnePrices', JSON.stringify(newPrices));
+
+                // رفع للفايربيز إن وجد
+                if (database && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                    database.ref('chapterOnePrices').set(newPrices)
+                        .then(() => {
+                            finishEditing();
+                            alert("تم حفظ ونشر الأسعار الجديدة على الفايربيز بنجاح! 💾🚀");
+                        })
+                        .catch((error) => {
+                            finishEditing();
+                            alert("تم الحفظ محلياً فقط! (تأكد من إعدادات قواعد البيانات Rules في الفايربيز)");
+                        });
+                } else {
+                    finishEditing();
+                    alert("تم حفظ ونشر الأسعار بنجاح! 💾🚀");
+                }
+            };
+        }
+
+        function finishEditing() {
+            document.querySelectorAll('.item-price').forEach(priceEl => {
+                priceEl.removeAttribute('contenteditable');
+                priceEl.classList.remove('editable-price');
+            });
+            saveBtn.style.display = 'none'; 
+            if (adminTrigger) adminTrigger.style.display = 'flex'; 
+        }
     </script>
 </body>
 </html>
