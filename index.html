@@ -137,21 +137,6 @@
             z-index: 1;
         }
 
-        .section-illustration {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-
-        .section-illustration svg {
-            width: 60px;
-            height: 60px;
-            stroke: var(--accent-color);
-            stroke-width: 1.5;
-            fill: none;
-            opacity: 0.8;
-        }
-
         .section-header h2 {
             font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
@@ -206,7 +191,6 @@
             border: 1px solid var(--border-color);
             font-size: 0.95rem;
             white-space: nowrap;
-            transition: all 0.3s ease;
         }
 
         /* --- تنسيقات وضع الأدمن --- */
@@ -217,7 +201,6 @@
             outline: none;
         }
 
-        /* زر حذف صنف معين أثناء وضع الأدمن */
         .delete-item-btn {
             display: none;
             background: #c0392b;
@@ -233,7 +216,6 @@
             justify-content: center;
         }
 
-        /* زر إضافة صنف جديد داخل القسم */
         .add-item-btn {
             display: none;
             margin: 15px auto 0 auto;
@@ -246,7 +228,6 @@
             font-size: 0.9rem;
             cursor: pointer;
             font-weight: bold;
-            display: none;
         }
         .add-item-btn:hover {
             background: var(--dark-brown);
@@ -276,6 +257,7 @@
             outline: none;
             padding: 0;
             margin: 0 auto;
+            z-index: 100;
         }
 
         .admin-trigger-btn:hover {
@@ -292,7 +274,6 @@
             pointer-events: none;
         }
 
-        /* أزرار الحفظ العامة أسفل الشاشة */
         .admin-actions-bar {
             display: none;
             position: fixed;
@@ -384,23 +365,22 @@
         <a href="#shisha">الشيشة والروم</a>
     </nav>
 
-    <div class="container" id="menu-container">
-        <!-- سيتم توليد أقسام المنيو وإضافتها هنا ديناميكياً لسهولة التعديل والحذف والإضافة -->
-    </div>
+    <!-- الحاوية الأساسية التي سيتم عرض المنيو عليها -->
+    <div class="container" id="menu-container"></div>
 
-    <!-- زر الأدمن (3 شرط) -->
+    <!-- زر الأدمن (3 شرط فوق بعض) -->
     <div class="admin-controls-container">
-        <button type="button" class="admin-trigger-btn" id="admin-trigger" title="لوحة تحكم الأسعار">
+        <button type="button" class="admin-trigger-btn" id="admin-trigger" title="لوحة تحكم الأدمن">
             <span></span>
             <span></span>
             <span></span>
         </button>
     </div>
 
-    <!-- أزرار التحكم والتحفظ للأدمن أسفل الشاشة -->
+    <!-- شريط أزرار التحكم للأدمن أسفل الشاشة -->
     <div class="admin-actions-bar" id="admin-actions-bar">
-        <button class="save-btn" id="save-btn">حفظ ونشر التعديلات 💾</button>
-        <button class="exit-admin-btn" id="exit-admin-btn">إلغاء وخروج ❌</button>
+        <button type="button" class="save-btn" id="save-btn">حفظ ونشر التعديلات 💾</button>
+        <button type="button" class="exit-admin-btn" id="exit-admin-btn">إلغاء وخروج ❌</button>
     </div>
 
     <footer>
@@ -425,7 +405,7 @@
         }
         const database = firebase.database();
 
-        // الداتا الافتراضية للمنيو في حال كانت قاعدة البيانات فارغة
+        // بيانات المنيو الافتراضية كاملة
         const defaultMenuData = [
             {
                 id: "hot-drinks",
@@ -568,9 +548,10 @@
 
         let isAdminMode = false;
 
-        // رسم المنيو على الشاشة
+        // دالة رسم المنيو على الشاشة
         function renderMenu(menuData) {
             const container = document.getElementById('menu-container');
+            if (!container) return;
             container.innerHTML = '';
 
             menuData.forEach(section => {
@@ -605,21 +586,24 @@
             });
         }
 
-        // جلب البيانات من Firebase والاستماع للتحديثات الفورية
-        function listenToDatabase() {
+        // قراءة البيانات من Firebase أو إظهار الافتراضية
+        function initDatabaseListener() {
             database.ref('chapterOneMenu').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
                     renderMenu(data);
                 } else {
-                    // إذا لم تكن البيانات موجودة بالسحابة، قم برفع الداتا الافتراضية لأول مرة
                     database.ref('chapterOneMenu').set(defaultMenuData);
                     renderMenu(defaultMenuData);
                 }
+            }, (error) => {
+                console.warn("استخدام الداتا المحلية لخطأ في الاتصال بالفايربيز");
+                renderMenu(defaultMenuData);
             });
         }
 
-        listenToDatabase();
+        // تشغيل الجلب فور فتح الصفحة
+        initDatabaseListener();
 
         // إضافة صنف جديد
         window.addNewItem = function(sectionId) {
@@ -629,8 +613,7 @@
                 if (section) {
                     section.items.push({ name: "اسم الصنف الجديد", price: "0 ج.م" });
                     database.ref('chapterOneMenu').set(menuData).then(() => {
-                        // الحفاظ على وضع الأدمن مفعل بعد التحديث
-                        setTimeout(() => enableAdminModeUI(), 200);
+                        setTimeout(() => enableAdminModeUI(), 150);
                     });
                 }
             });
@@ -645,47 +628,43 @@
                     if (section) {
                         section.items.splice(itemIndex, 1);
                         database.ref('chapterOneMenu').set(menuData).then(() => {
-                            setTimeout(() => enableAdminModeUI(), 200);
+                            setTimeout(() => enableAdminModeUI(), 150);
                         });
                     }
                 });
             }
         };
 
-        // تفعيل وضع الأدمن والتحرير
+        // تفعيل زر الأدمن (3 شرط)
         const adminTrigger = document.getElementById('admin-trigger');
         const adminActionsBar = document.getElementById('admin-actions-bar');
         const saveBtn = document.getElementById('save-btn');
         const exitAdminBtn = document.getElementById('exit-admin-btn');
         const ADMIN_PASSWORD = "Ytrewq";
 
-        adminTrigger.onclick = function(e) {
-            e.preventDefault();
-            const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
-            if (userPass === ADMIN_PASSWORD) {
-                isAdminMode = true;
-                enableAdminModeUI();
-                adminTrigger.style.display = 'none';
-                adminActionsBar.style.display = 'flex';
-                alert("✅ وضع التعديل مُفعل.\nيمكنك تعديل الأسماء والأسعار بالنقر عليها، أو إضافة وحذف الأصناف، ثم اضغط 'حفظ ونشر التعديلات'.");
-            } else if (userPass !== null) {
-                alert("❌ كلمة المرور غير صحيحة!");
-            }
-        };
+        if (adminTrigger) {
+            adminTrigger.onclick = function(e) {
+                e.preventDefault();
+                const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
+                if (userPass === ADMIN_PASSWORD) {
+                    enableAdminModeUI();
+                    alert("✅ وضع التعديل مُفعل.\nيمكنك الآن تعديل الأسماء والأسعار مباشرة، أو حذف وإضافة أصناف، ثم اضغط على زر الحفظ الأخضر أسفل الشاشة.");
+                } else if (userPass !== null) {
+                    alert("❌ كلمة المرور غير صحيحة!");
+                }
+            };
+        }
 
         function enableAdminModeUI() {
             isAdminMode = true;
-            renderMenu(getCurrentDOMData()); // إعادة الرسم مع تفعيل التعديل
-            document.querySelectorAll('.editable-name, .editable-price').forEach(el => {
-                el.setAttribute('contenteditable', 'true');
+            database.ref('chapterOneMenu').once('value', (snapshot) => {
+                const currentData = snapshot.val() || defaultMenuData;
+                renderMenu(currentData);
+                adminTrigger.style.display = 'none';
+                adminActionsBar.style.display = 'flex';
             });
-            document.querySelectorAll('.delete-item-btn').forEach(btn => btn.style.display = 'flex');
-            document.querySelectorAll('.add-item-btn').forEach(btn => btn.style.display = 'block');
-            adminTrigger.style.display = 'none';
-            adminActionsBar.style.display = 'flex';
         }
 
-        // قراءة البيانات الحالية من الشاشة عند الضغط على حفظ
         function getCurrentDOMData() {
             let menuData = [];
             document.querySelectorAll('.menu-section').forEach(sectionEl => {
@@ -703,28 +682,32 @@
             return menuData;
         }
 
-        // زر الحفظ والنشر
-        saveBtn.onclick = function() {
-            const updatedMenuData = getCurrentDOMData();
-            database.ref('chapterOneMenu').set(updatedMenuData)
-                .then(() => {
-                    isAdminMode = false;
-                    adminActionsBar.style.display = 'none';
-                    adminTrigger.style.display = 'flex';
-                    alert("تم حفظ ونشر المنيو والتعديلات على سحابة Firebase بنجاح لجميع الزوار! 💾🚀");
-                })
-                .catch((error) => {
-                    alert("حدث خطأ أثناء الحفظ: " + error.message);
-                });
-        };
+        // حفظ التعديلات ونشرها للسحابة
+        if (saveBtn) {
+            saveBtn.onclick = function() {
+                const updatedMenuData = getCurrentDOMData();
+                database.ref('chapterOneMenu').set(updatedMenuData)
+                    .then(() => {
+                        isAdminMode = false;
+                        adminActionsBar.style.display = 'none';
+                        adminTrigger.style.display = 'flex';
+                        alert("تم حفظ ونشر التعديلات على سحابة Firebase بنجاح لتظهر لجميع الزوار! 💾🚀");
+                    })
+                    .catch((error) => {
+                        alert("حدث خطأ أثناء الحفظ بالسحابة: " + error.message);
+                    });
+            };
+        }
 
-        // زر الخروج دون حفظ
-        exitAdminBtn.onclick = function() {
-            isAdminMode = false;
-            adminActionsBar.style.display = 'none';
-            adminTrigger.style.display = 'flex';
-            listenToDatabase(); // إعادة جلب النسخة الأصلية من السحابة
-        };
+        // الخروج من وضع الأدمن دون حفظ
+        if (exitAdminBtn) {
+            exitAdminBtn.onclick = function() {
+                isAdminMode = false;
+                adminActionsBar.style.display = 'none';
+                adminTrigger.style.display = 'flex';
+                initDatabaseListener();
+            };
+        }
     </script>
 </body>
 </html>
