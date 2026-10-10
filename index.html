@@ -622,30 +622,44 @@
             grid.appendChild(newItem);
         }
 
-        // جلب البيانات وعرضها بشكل تلقائي من Firebase لجميع الزوار
-        function loadMenuData() {
-            database.ref('menuData').on('value', (snapshot) => {
-                const data = snapshot.val() || defaultMenuData;
+        // دالة رسم الأصناف والأسعار داخل الأقسام
+        function renderMenu(data) {
+            document.querySelectorAll('.menu-section').forEach(section => {
+                const catId = section.getAttribute('data-category');
+                const grid = section.querySelector('.menu-grid');
+                grid.innerHTML = '';
                 
-                document.querySelectorAll('.menu-section').forEach(section => {
-                    const catId = section.getAttribute('data-category');
-                    const grid = section.querySelector('.menu-grid');
-                    grid.innerHTML = '';
-                    
-                    if (data[catId]) {
-                        data[catId].forEach(itemData => {
-                            const itemEl = document.createElement('div');
-                            itemEl.className = 'menu-item';
-                            itemEl.innerHTML = `
-                                <button class="delete-item-btn" title="حذف الصنف" onclick="this.parentElement.remove()">×</button>
-                                <span class="item-name">${itemData.name}</span>
-                                <span class="item-price">${itemData.price}</span>
-                            `;
-                            grid.appendChild(itemEl);
-                        });
-                    }
-                });
+                if (data && data[catId]) {
+                    data[catId].forEach(itemData => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'menu-item';
+                        itemEl.innerHTML = `
+                            <button class="delete-item-btn" title="حذف الصنف" onclick="this.parentElement.remove()">×</button>
+                            <span class="item-name">${itemData.name}</span>
+                            <span class="item-price">${itemData.price}</span>
+                        `;
+                        grid.appendChild(itemEl);
+                    });
+                }
             });
+        }
+
+        // جلب البيانات مع عرض البيانات الافتراضية أولاً لضمان عدم ظهور الصفحة فارغة
+        function loadMenuData() {
+            renderMenu(defaultMenuData); // عرض القائمة فوراً
+
+            try {
+                database.ref('menuData').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        renderMenu(data); // تحديث القائمة بالبيانات المحفوظة سحابياً
+                    }
+                }, (error) => {
+                    console.log("استخدام القائمة الافتراضية محلياً.");
+                });
+            } catch (e) {
+                console.log("Firebase غير مفعل بالكامل، يتم عرض القائمة الافتراضية.");
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
