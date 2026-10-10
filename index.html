@@ -17,11 +17,7 @@
             --gold-accent: #c49a45;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-color);
@@ -40,154 +36,96 @@
         }
 
         .logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
             margin-bottom: 15px;
         }
 
         .g1-logo {
-            width: 160px;
-            height: 160px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 160px; height: 160px; margin-bottom: 15px;
+            display: flex; justify-content: center; align-items: center;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
         }
 
         .g1-logo svg {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
+            width: 100%; height: 100%; border-radius: 50%;
             box-shadow: 0 0 0 4px #5c3a21, 0 0 0 8px #d4bc96;
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: var(--dark-brown);
-            letter-spacing: 1px;
+            font-size: 2.2rem; color: var(--dark-brown); letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            color: var(--accent-color);
-            margin-top: 5px;
-            font-style: italic;
+            font-size: 1.1rem; color: var(--accent-color);
+            margin-top: 5px; font-style: italic;
         }
 
         nav.categories-nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 40px;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 10px; margin-bottom: 40px;
             background: rgba(242, 227, 198, 0.95);
-            padding: 12px 10px;
-            border-radius: 8px;
+            padding: 12px 10px; border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border: 1px solid var(--border-color);
         }
 
         nav.categories-nav a {
-            text-decoration: none;
-            color: var(--dark-brown);
-            background: #e3ccaa;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 0.95rem;
+            text-decoration: none; color: var(--dark-brown);
+            background: #e3ccaa; padding: 8px 16px; border-radius: 4px;
+            font-weight: 600; font-size: 0.95rem;
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
-        nav.categories-nav a:hover {
-            background: var(--dark-brown);
-            color: #f2e3c6;
-        }
+        nav.categories-nav a:hover { background: var(--dark-brown); color: #f2e3c6; }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .container { max-width: 900px; margin: 0 auto; }
 
         section.menu-section {
             background: rgba(255, 250, 240, 0.6);
             border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 40px;
+            border-radius: 12px; padding: 25px; margin-bottom: 40px;
             box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
 
         section.menu-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            content: ''; position: absolute; inset: 0;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10 10 Q 50 0 90 10 Q 100 50 90 90 Q 50 100 10 90 Q 0 50 10 10" fill="none" stroke="%235c3a21" stroke-width="0.5" opacity="0.05"/></svg>');
-            pointer-events: none;
-            z-index: 0;
+            pointer-events: none; z-index: 0;
         }
 
         .section-header {
             text-align: center;
             border-bottom: 2px dashed var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 1;
+            padding-bottom: 15px; margin-bottom: 25px;
+            position: relative; z-index: 1;
         }
 
-        .section-illustration {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
+        .section-illustration { display: flex; justify-content: center; margin-bottom: 10px; }
 
         .section-illustration svg {
-            width: 60px;
-            height: 60px;
-            stroke: var(--accent-color);
-            stroke-width: 1.5;
-            fill: none;
-            opacity: 0.8;
+            width: 60px; height: 60px;
+            stroke: var(--accent-color); stroke-width: 1.5;
+            fill: none; opacity: 0.8;
         }
 
-        .section-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--dark-brown);
-        }
-
-        .section-header span {
-            font-size: 1rem;
-            color: var(--accent-color);
-            display: block;
-            margin-top: 5px;
-        }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--dark-brown); }
+        .section-header span { font-size: 1rem; color: var(--accent-color); display: block; margin-top: 5px; }
 
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            position: relative;
-            z-index: 1;
+            gap: 20px; position: relative; z-index: 1;
         }
 
         .menu-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background: rgba(230, 210, 181, 0.4);
-            border-radius: 6px;
-            border: 1px solid rgba(92, 58, 33, 0.2);
-            transition: transform 0.2s, background 0.2s;
-            position: relative;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px; background: rgba(230, 210, 181, 0.4);
+            border-radius: 6px; border: 1px solid rgba(92, 58, 33, 0.2);
+            transition: transform 0.2s, background 0.2s; position: relative;
         }
 
         .menu-item:hover {
@@ -196,149 +134,104 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .item-name {
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: var(--dark-brown);
-        }
+        .item-name { font-weight: 700; font-size: 1.05rem; color: var(--dark-brown); }
 
         .item-price {
-            font-weight: bold;
-            color: #a33b20;
-            background: #fdf5e6;
-            padding: 4px 10px;
-            border-radius: 20px;
+            font-weight: bold; color: #a33b20; background: #fdf5e6;
+            padding: 4px 10px; border-radius: 20px;
             border: 1px solid var(--border-color);
-            font-size: 0.95rem;
-            white-space: nowrap;
+            font-size: 0.95rem; white-space: nowrap;
             transition: all 0.3s ease;
         }
 
-        /* --- تنسيقات وضع الأدمن والتعديل والإضافة والحذف --- */
+        /* --- تنسيقات وضع الأدمن --- */
         .editable-price {
             background: #ffeaa7 !important;
             border: 2px dashed #d35400 !important;
-            cursor: text;
-            outline: none;
+            cursor: text; outline: none;
         }
 
         .editable-name {
             background: #ffeaa7 !important;
             border: 1px dashed #d35400 !important;
-            outline: none;
-            padding: 2px 5px;
-            border-radius: 4px;
+            outline: none; padding: 2px 5px; border-radius: 4px;
         }
 
         .delete-item-btn {
-            display: none;
-            background: #c0392b;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 14px;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            z-index: 10;
+            display: none; background: #c0392b; color: white;
+            border: none; border-radius: 50%;
+            width: 24px; height: 24px; font-size: 14px;
+            cursor: pointer; align-items: center; justify-content: center;
+            position: absolute; top: -8px; right: -8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); z-index: 10;
         }
 
         .add-item-container {
-            display: none;
-            margin-top: 20px;
-            padding-top: 15px;
+            display: none; margin-top: 20px; padding-top: 15px;
             border-top: 1px dashed var(--border-color);
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            text-align: center; position: relative; z-index: 1;
         }
 
         .add-item-btn {
-            background: var(--accent-color);
-            color: #f2e3c6;
+            background: var(--accent-color); color: #f2e3c6;
             border: 1px solid var(--border-color);
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
+            padding: 8px 20px; border-radius: 6px;
+            font-family: 'Cairo', sans-serif; font-weight: 600;
+            cursor: pointer; transition: background 0.3s;
         }
 
-        .add-item-btn:hover {
-            background: var(--dark-brown);
-        }
+        .add-item-btn:hover { background: var(--dark-brown); }
 
         .admin-controls-container {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0 20px 0;
-            padding-top: 20px;
+            display: flex; justify-content: center;
+            margin: 40px 0 20px 0; padding-top: 20px;
         }
 
         .admin-trigger {
-            width: 50px;
-            height: 50px;
-            background: var(--dark-brown);
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 50px; height: 50px; background: var(--dark-brown);
+            border-radius: 50%; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; gap: 6px;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, background 0.3s ease;
         }
 
-        .admin-trigger:hover {
-            transform: scale(1.1);
-            background: #5c3a21;
-        }
+        .admin-trigger:hover { transform: scale(1.1); background: #5c3a21; }
 
         .admin-trigger span {
-            width: 25px;
-            height: 3px;
-            background: #f2e3c6;
-            border-radius: 2px;
+            width: 25px; height: 3px; background: #f2e3c6; border-radius: 2px;
         }
 
         .save-btn {
-            display: none;
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
+            display: none; position: fixed; bottom: 25px; left: 50%;
             transform: translateX(-50%);
-            background: #27ae60;
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 25px;
-            border: none;
-            font-family: 'Cairo', sans-serif;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1000;
+            background: #27ae60; color: #fff;
+            padding: 12px 30px; border-radius: 25px; border: none;
+            font-family: 'Cairo', sans-serif; font-size: 1.1rem;
+            font-weight: bold; cursor: pointer; z-index: 1000;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             transition: background 0.3s ease;
         }
 
-        .save-btn:hover {
-            background: #219653;
+        .save-btn:hover { background: #219653; }
+        .save-btn:disabled { background: #7f8c8d; cursor: wait; }
+
+        /* مؤشر حالة الاتصال بالسحابة */
+        .sync-status {
+            position: fixed; top: 12px; left: 12px;
+            font-family: 'Cairo', sans-serif; font-size: 12px;
+            padding: 6px 14px; border-radius: 20px;
+            color: #fff; z-index: 2000; opacity: 0.92;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            transition: background 0.3s ease;
         }
+        .sync-status.ok   { background: #27ae60; }
+        .sync-status.warn { background: #e67e22; }
+        .sync-status.err  { background: #c0392b; }
 
         footer {
-            text-align: center;
-            padding: 30px 30px 50px 30px;
+            text-align: center; padding: 30px 30px 50px 30px;
             border-top: 3px double var(--border-color);
-            margin-top: 10px;
-            color: var(--dark-brown);
+            margin-top: 10px; color: var(--dark-brown);
             font-family: 'Playfair Display', serif;
         }
 
@@ -351,6 +244,8 @@
     </style>
 </head>
 <body>
+
+    <div class="sync-status ok" id="sync-status">جارِ الاتصال...</div>
 
     <header>
         <div class="logo-container">
@@ -468,7 +363,7 @@
                     <svg viewBox="0 0 24 24"><path d="M6 6h12v12a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V6z"></path><rect x="8" y="8" width="3" height="3"></rect><rect x="13" y="10" width="3" height="3"></rect><rect x="10" y="13" width="3" height="3"></rect><path d="M12 3v3"></path><path d="M9 21l-2 3M15 21l2 3"></path></svg>
                 </div>
                 <h2>آيس كوفي وموهيتو</h2>
-                <span>Iced Coffee & Mojito - Chapter 03</span>
+                <span>Iced Coffee &amp; Mojito - Chapter 03</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><button class="delete-item-btn" onclick="this.parentElement.remove()">×</button><span class="item-name">آيس كوفي</span><span class="item-price">55 ج.م</span></div>
@@ -497,8 +392,8 @@
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24"><path d="M7 10h10l-1 10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2L7 10z"></path><path d="M12 10V4"></path><path d="M10 4h4"></path><path d="M12 2v2"></path><path d="M8 15h8"></path><path d="M9 18h6"></path></svg>
                 </div>
-                <h2>ميلك شيك & ديزرت</h2>
-                <span>Milk Shake & Dessert - Chapter 04</span>
+                <h2>ميلك شيك &amp; ديزرت</h2>
+                <span>Milk Shake &amp; Dessert - Chapter 04</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><button class="delete-item-btn" onclick="this.parentElement.remove()">×</button><span class="item-name">ميلك شيك أوريو</span><span class="item-price">65 ج.م</span></div>
@@ -527,8 +422,8 @@
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24"><path d="M7 10l5 12 5-12H7z"></path><path d="M12 2a5 5 0 0 0-5 5c0 1.5 1 2 1 3h8c0-1 1-1.5 1-3a5 5 0 0 0-5-5z"></path><path d="M12 7a2 2 0 0 0-2 2"></path></svg>
                 </div>
-                <h2>آيس كريم، مشروبات غازية & الإضافات</h2>
-                <span>Ice Cream, Soft Drinks & Add-ons - Chapter 05</span>
+                <h2>آيس كريم، مشروبات غازية &amp; الإضافات</h2>
+                <span>Ice Cream, Soft Drinks &amp; Add-ons - Chapter 05</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><button class="delete-item-btn" onclick="this.parentElement.remove()">×</button><span class="item-name">آيس كريم Chapter One</span><span class="item-price">50 ج.م</span></div>
@@ -580,8 +475,8 @@
                 <div class="section-illustration">
                     <svg viewBox="0 0 24 24"><path d="M12 21v-6"></path><path d="M9 15h6"></path><path d="M8 15v-3a4 4 0 0 1 8 0v3"></path><path d="M10 5V3"></path><path d="M14 5V3"></path><path d="M10 5h4"></path><path d="M12 6v5"></path><path d="M18 10c0 2-2 3-3 5"></path></svg>
                 </div>
-                <h2>الرومات & الشيشة</h2>
-                <span>Rooms & Shisha - Chapter 06</span>
+                <h2>الرومات &amp; الشيشة</h2>
+                <span>Rooms &amp; Shisha - Chapter 06</span>
             </div>
             <div class="menu-grid">
                 <div class="menu-item"><button class="delete-item-btn" onclick="this.parentElement.remove()">×</button><span class="item-name">شيشة قص</span><span class="item-price">15 ج.م</span></div>
@@ -601,9 +496,7 @@
         <!-- زر الأدمن -->
         <div class="admin-controls-container">
             <div class="admin-trigger" id="admin-trigger" title="لوحة تحكم المنيو">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </div>
 
@@ -618,180 +511,309 @@
     </footer>
 
     <script>
-        // استخدام خدمة JSONBin السحابية الموثوقة لحفظ ومزامنة المنيو فورياً لجميع العملاء عبر الإنترنت
-        const BIN_ID = "66f36b6cad19ca34f8a846cd"; 
-        const API_KEY = "$2a$10$vK8JtN9F4G2X0p7b2J6M6u5Vb6Y7M5X8c7Z9V0W1X2Y3Z4a5b6c7d"; // مفتاح عام مجاني للقراءة والكتابة
+    /* ============================================================
+       ⚙️  إعدادات Firebase Realtime Database
+       ============================================================
+       استبدل الرابط التالي برابط قاعدة البيانات الخاصة بمشروعك.
+       تجده في: Firebase Console → Realtime Database → الرابط أعلى الصفحة
+       مثال: https://chapter-one-cafe-default-rtdb.firebaseio.com
+       (بدون / في النهاية)
+    ============================================================ */
+    const FIREBASE_DB_URL = "https://chapter-one-cafe-default-rtdb.firebaseio.com";
 
-        // دالة رسم الأصناف بالكامل لكل قسم
-        function renderFullMenu(menuData) {
-            if (!menuData) return;
-            
-            document.querySelectorAll('.menu-section').forEach(section => {
-                const catId = section.getAttribute('data-category');
-                const grid = section.querySelector('.menu-grid');
-                
-                if (menuData[catId]) {
-                    grid.innerHTML = '';
-                    menuData[catId].forEach(item => {
-                        const itemEl = document.createElement('div');
-                        itemEl.className = 'menu-item';
-                        itemEl.innerHTML = `
-                            <button class="delete-item-btn" onclick="this.parentElement.remove()">×</button>
-                            <span class="item-name">${item.name}</span>
-                            <span class="item-price">${item.price}</span>
-                        `;
-                        grid.appendChild(itemEl);
-                    });
-                }
+    const MENU_PATH = "chapterOneMenu";                 // مسار تخزين المنيو
+    const MENU_URL  = `${FIREBASE_DB_URL}/${MENU_PATH}.json`;
+    const LS_KEY    = "chapterOneFullMenu";             // نسخة احتياطية محلياً
+    const ADMIN_PASSWORD = "Ytrewq";                    // كلمة مرور الأدمن
+    const REFRESH_MS = 15000;                           // كل 15 ثانية يتحقق من التحديثات
+
+    let isEditMode = false;      // هل الأدمن في وضع التعديل؟
+    let refreshTimer = null;     // مؤقت التحديث التلقائي
+    let lastCloudJSON = "";      // لمقارنة البيانات وتجنب إعادة الرسم بلا داعي
+
+    /* ---------- مؤشر حالة الاتصال ---------- */
+    function setStatus(text, type) {
+        const el = document.getElementById('sync-status');
+        if (!el) return;
+        el.textContent = text;
+        el.className = 'sync-status ' + (type || 'ok');
+    }
+
+    /* ---------- رسم المنيو بالكامل من البيانات القادمة من السحابة ---------- */
+    function renderFullMenu(menuData) {
+        if (!menuData || typeof menuData !== 'object') return;
+
+        document.querySelectorAll('.menu-section').forEach(section => {
+            const catId = section.getAttribute('data-category');
+            const grid  = section.querySelector('.menu-grid');
+            const items = menuData[catId];
+
+            // لو القسم مش موجود في البيانات نسيبه زي ما هو
+            if (!Array.isArray(items)) return;
+
+            grid.innerHTML = '';
+            items.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'menu-item';
+
+                const btn = document.createElement('button');
+                btn.className = 'delete-item-btn';
+                btn.textContent = '×';
+                btn.onclick = function () { this.parentElement.remove(); };
+
+                const nameEl = document.createElement('span');
+                nameEl.className = 'item-name';
+                nameEl.textContent = item.name || '';
+
+                const priceEl = document.createElement('span');
+                priceEl.className = 'item-price';
+                priceEl.textContent = item.price || '';
+
+                itemEl.appendChild(btn);
+                itemEl.appendChild(nameEl);
+                itemEl.appendChild(priceEl);
+                grid.appendChild(itemEl);
             });
-        }
+        });
+    }
 
-        // دالة إضافة صنف جديد داخل القسم
-        function addNewItem(button) {
-            const section = button.closest('.menu-section');
-            const grid = section.querySelector('.menu-grid');
-            
-            const newItem = document.createElement('div');
-            newItem.className = 'menu-item';
-            newItem.innerHTML = `
-                <button class="delete-item-btn" style="display: flex;" onclick="this.parentElement.remove()">×</button>
-                <span class="item-name editable-name" contenteditable="true">اسم الصنف</span>
-                <span class="item-price editable-price" contenteditable="true">0 ج.م</span>
-            `;
-            grid.appendChild(newItem);
-        }
+    /* ---------- إضافة صنف جديد داخل القسم ---------- */
+    function addNewItem(button) {
+        const section = button.closest('.menu-section');
+        const grid = section.querySelector('.menu-grid');
 
-        // جلب البيانات السحابية فور فتح الصفحة للعميل
-        async function fetchMenuFromCloud() {
-            try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
-                const result = await response.json();
-                if (result && result.record) {
-                    renderFullMenu(result.record);
-                    localStorage.setItem('chapterOneFullMenu', JSON.stringify(result.record));
+        const newItem = document.createElement('div');
+        newItem.className = 'menu-item';
+        newItem.innerHTML = `
+            <button class="delete-item-btn" style="display:flex;" onclick="this.parentElement.remove()">×</button>
+            <span class="item-name editable-name" contenteditable="true">اسم الصنف</span>
+            <span class="item-price editable-price" contenteditable="true">0 ج.م</span>
+        `;
+        grid.appendChild(newItem);
+
+        // تركيز المؤشر على الاسم مباشرة
+        const nameEl = newItem.querySelector('.item-name');
+        nameEl.focus();
+        document.execCommand && document.execCommand('selectAll', false, null);
+    }
+
+    /* ---------- جلب المنيو من Firebase ---------- */
+    async function loadMenuFromCloud() {
+        // مهم جداً: لا يتم التحديث التلقائي أثناء تعديل الأدمن حتى لا يضيع شغله
+        if (isEditMode) return;
+
+        try {
+            const res = await fetch(`${MENU_URL}?ts=${Date.now()}`, {
+                method: 'GET',
+                cache: 'no-store'
+            });
+
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+
+            const data = await res.json();
+
+            if (data && typeof data === 'object') {
+                const asText = JSON.stringify(data);
+
+                // لا تعيد الرسم لو مفيش تغيير
+                if (asText !== lastCloudJSON) {
+                    lastCloudJSON = asText;
+                    renderFullMenu(data);
                 }
-            } catch (e) {
-                // الاعتماد على النسخة المخزنة محلياً كبديل في حال انقطاع الإنترنت
-                const localMenu = JSON.parse(localStorage.getItem('chapterOneFullMenu'));
-                if (localMenu) {
-                    renderFullMenu(localMenu);
+
+                localStorage.setItem(LS_KEY, asText);
+                setStatus('🟢 متصل بالسحابة', 'ok');
+            } else {
+                // مفيش بيانات محفوظة لسه على Firebase
+                setStatus('🟠 لا توجد بيانات محفوظة بعد', 'warn');
+                const local = localStorage.getItem(LS_KEY);
+                if (local) {
+                    lastCloudJSON = local;
+                    renderFullMenu(JSON.parse(local));
                 }
             }
+        } catch (err) {
+            console.error('Firebase load error:', err);
+            // fallback: نعرض النسخة المحلية
+            const local = localStorage.getItem(LS_KEY);
+            if (local) {
+                renderFullMenu(JSON.parse(local));
+                setStatus('🔴 غير متصل - نسخة محلية', 'err');
+            } else {
+                setStatus('🔴 فشل الاتصال بـ Firebase', 'err');
+            }
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchMenuFromCloud();
+    /* ---------- تفعيل وضع التعديل ---------- */
+    function enableEditMode() {
+        isEditMode = true;
 
-            // تحديث تلقائي كل 10 ثوانٍ لكي يرى العميل أي تعديل أو سعر جديد فوراً دون ريفريش
-            setInterval(fetchMenuFromCloud, 10000);
+        document.querySelectorAll('.menu-item').forEach(item => {
+            const nameEl    = item.querySelector('.item-name');
+            const priceEl   = item.querySelector('.item-price');
+            const deleteBtn = item.querySelector('.delete-item-btn');
 
-            const adminTrigger = document.getElementById('admin-trigger');
-            const saveBtn = document.getElementById('save-btn');
-            const ADMIN_PASSWORD = "Ytrewq"; 
+            nameEl.setAttribute('contenteditable', 'true');
+            nameEl.classList.add('editable-name');
 
-            // تفعيل وضع التعديل (تعديل الأسعار والأسماء + الحذف + الإضافة)
-            if (adminTrigger) {
-                adminTrigger.addEventListener('click', () => {
-                    const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
-                    
-                    if (userPass === ADMIN_PASSWORD) {
-                        document.querySelectorAll('.menu-item').forEach(item => {
-                            const nameEl = item.querySelector('.item-name');
-                            const priceEl = item.querySelector('.item-price');
-                            const deleteBtn = item.querySelector('.delete-item-btn');
+            priceEl.setAttribute('contenteditable', 'true');
+            priceEl.classList.add('editable-price');
 
-                            nameEl.setAttribute('contenteditable', 'true');
-                            nameEl.classList.add('editable-name');
+            if (deleteBtn) deleteBtn.style.display = 'flex';
+        });
 
-                            priceEl.setAttribute('contenteditable', 'true');
-                            priceEl.classList.add('editable-price');
+        document.querySelectorAll('.add-item-container').forEach(c => c.style.display = 'block');
 
-                            if (deleteBtn) deleteBtn.style.display = 'flex';
-                        });
+        document.getElementById('save-btn').style.display = 'block';
+        document.getElementById('admin-trigger').style.display = 'none';
+        setStatus('✏️ وضع التعديل مُفعّل', 'warn');
+    }
 
-                        document.querySelectorAll('.add-item-container').forEach(container => {
-                            container.style.display = 'block';
-                        });
-                        
-                        saveBtn.style.display = 'block'; 
-                        adminTrigger.style.display = 'none'; 
-                        
-                        alert("✅ وضع التعديل مُفعل:\n- يمكنك النقر على أي اسم أو سعر لتعديله.\n- يمكنك حذف أي صنف بالضغط على علامة (×).\n- يمكنك إضافة أصناف جديدة في أي قسم.\n- ثم اضغط على 'حفظ ونشر التعديلات للجميع' أسفل الشاشة.");
-                    } else if (userPass !== null) {
-                        alert("❌ كلمة المرور غير صحيحة!");
-                    }
-                });
+    /* ---------- إيقاف وضع التعديل ---------- */
+    function disableEditMode() {
+        isEditMode = false;
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            const nameEl    = item.querySelector('.item-name');
+            const priceEl   = item.querySelector('.item-price');
+            const deleteBtn = item.querySelector('.delete-item-btn');
+
+            nameEl.removeAttribute('contenteditable');
+            nameEl.classList.remove('editable-name');
+
+            priceEl.removeAttribute('contenteditable');
+            priceEl.classList.remove('editable-price');
+
+            if (deleteBtn) deleteBtn.style.display = 'none';
+        });
+
+        document.querySelectorAll('.add-item-container').forEach(c => c.style.display = 'none');
+
+        document.getElementById('save-btn').style.display = 'none';
+        document.getElementById('admin-trigger').style.display = 'flex';
+    }
+
+    /* ---------- جمع بيانات المنيو من الصفحة ---------- */
+    function collectMenuData() {
+        const fullMenuData = {};
+
+        document.querySelectorAll('.menu-section').forEach(section => {
+            const catId = section.getAttribute('data-category');
+            const items = [];
+
+            section.querySelectorAll('.menu-item').forEach(item => {
+                const name  = item.querySelector('.item-name').innerText.trim();
+                const price = item.querySelector('.item-price').innerText.trim();
+                if (name) items.push({ name, price });
+            });
+
+            fullMenuData[catId] = items;
+        });
+
+        return fullMenuData;
+    }
+
+    /* ---------- حفظ ونشر التعديلات على Firebase ---------- */
+    async function saveMenuToCloud() {
+        const saveBtn = document.getElementById('save-btn');
+        const fullMenuData = collectMenuData();
+
+        // حفظ محلي فوري (حتى لو النت قطع)
+        localStorage.setItem(LS_KEY, JSON.stringify(fullMenuData));
+        lastCloudJSON = JSON.stringify(fullMenuData);
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'جارِ الحفظ على Firebase...';
+
+        try {
+            const res = await fetch(MENU_URL, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(fullMenuData)
+            });
+
+            if (!res.ok) {
+                const errText = await res.text();
+                throw new Error(`HTTP ${res.status} - ${errText}`);
             }
 
-            // حفظ ونشر التعديلات سحابياً لجميع الزوار
-            if (saveBtn) {
-                saveBtn.addEventListener('click', async () => {
-                    const fullMenuData = {};
-                    
-                    document.querySelectorAll('.menu-section').forEach(section => {
-                        const catId = section.getAttribute('data-category');
-                        const items = [];
-                        
-                        section.querySelectorAll('.menu-item').forEach(item => {
-                            const name = item.querySelector('.item-name').innerText.trim();
-                            const price = item.querySelector('.item-price').innerText.trim();
-                            if (name) {
-                                items.push({ name, price });
-                            }
-                        });
-                        
-                        fullMenuData[catId] = items;
-                    });
-                    
-                    // حفظ محلياً أيضاً
-                    localStorage.setItem('chapterOneFullMenu', JSON.stringify(fullMenuData));
-                    
-                    // حفظ سحابياً ليراها جميع العملاء مباشرة
-                    try {
-                        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-Master-Key': API_KEY
-                            },
-                            body: JSON.stringify(fullMenuData)
-                        });
+            alert("✅ تم حفظ ونشر التعديلات على Firebase بنجاح!\nستظهر لجميع الزوار خلال ثوانٍ.");
+            disableEditMode();
+            setStatus('🟢 متصل بالسحابة', 'ok');
 
-                        if (response.ok) {
-                            alert("تم حفظ ونشر التعديلات بنجاح وظهرت لجميع الزوار فوراً! 🚀");
-                        } else {
-                            alert("تم الحفظ محلياً بنجاح، وتحقق من الاتصال لنشرها سحابياً.");
-                        }
-                    } catch (error) {
-                        alert("تم الحفظ محلياً بنجاح (حدث خطأ في الاتصال بالشبكة).");
-                    }
+        } catch (err) {
+            console.error('Firebase save error:', err);
+            alert(
+                "⚠️ لم يتم الحفظ على Firebase!\n\n" +
+                "تم الحفظ محلياً على جهازك فقط.\n\n" +
+                "الأسباب المحتملة:\n" +
+                "1) رابط قاعدة البيانات FIREBASE_DB_URL غير صحيح.\n" +
+                "2) قواعد الأمان (Rules) في Firebase تمنع الكتابة.\n" +
+                "3) لا يوجد اتصال بالإنترنت.\n\n" +
+                "تفاصيل الخطأ: " + err.message
+            );
+            setStatus('🔴 فشل الحفظ على Firebase', 'err');
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'حفظ ونشر التعديلات للجميع';
+        }
+    }
 
-                    // إغلاق وضع التعديل
-                    document.querySelectorAll('.menu-item').forEach(item => {
-                        const nameEl = item.querySelector('.item-name');
-                        const priceEl = item.querySelector('.item-price');
-                        const deleteBtn = item.querySelector('.delete-item-btn');
+    /* ---------- بدء التحديث التلقائي ---------- */
+    function startAutoRefresh() {
+        if (refreshTimer) clearInterval(refreshTimer);
+        refreshTimer = setInterval(loadMenuFromCloud, REFRESH_MS);
+    }
 
-                        nameEl.removeAttribute('contenteditable');
-                        nameEl.classList.remove('editable-name');
+    /* ---------- التهيئة عند تحميل الصفحة ---------- */
+    document.addEventListener('DOMContentLoaded', () => {
+        // تحقق من صحة الرابط قبل أي شيء
+        if (!FIREBASE_DB_URL || FIREBASE_DB_URL.includes("YOUR-PROJECT") || FIREBASE_DB_URL.includes("chapter-one-cafe-default")) {
+            setStatus('⚠️ عدّل رابط Firebase في الكود أولاً', 'err');
+            console.warn("⚠️ لم يتم ضبط FIREBASE_DB_URL بشكل صحيح.");
+        }
 
-                        priceEl.removeAttribute('contenteditable');
-                        priceEl.classList.remove('editable-price');
+        loadMenuFromCloud();
+        startAutoRefresh();
 
-                        if (deleteBtn) deleteBtn.style.display = 'none';
-                    });
+        const adminTrigger = document.getElementById('admin-trigger');
+        const saveBtn      = document.getElementById('save-btn');
 
-                    document.querySelectorAll('.add-item-container').forEach(container => {
-                        container.style.display = 'none';
-                    });
-                    
-                    saveBtn.style.display = 'none'; 
-                    adminTrigger.style.display = 'flex'; 
-                });
+        // فتح لوحة الأدمن بكلمة مرور
+        adminTrigger.addEventListener('click', () => {
+            const userPass = prompt("أدخل كلمة المرور الخاصة بالأدمن:");
+
+            if (userPass === ADMIN_PASSWORD) {
+                enableEditMode();
+                alert(
+                    "✅ وضع التعديل مُفعل:\n" +
+                    "- انقر على أي اسم أو سعر لتعديله.\n" +
+                    "- احذف أي صنف بعلامة (×).\n" +
+                    "- أضف أصناف جديدة من أي قسم.\n" +
+                    "- ثم اضغط 'حفظ ونشر التعديلات للجميع'."
+                );
+            } else if (userPass !== null) {
+                alert("❌ كلمة المرور غير صحيحة!");
             }
         });
+
+        // حفظ التعديلات
+        saveBtn.addEventListener('click', saveMenuToCloud);
+
+        // تحذير لو حاول يقفل الصفحة وفي تعديلات غير محفوظة
+        window.addEventListener('beforeunload', (e) => {
+            if (isEditMode) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // لما يرجع للتاب يحدّث فوراً
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && !isEditMode) loadMenuFromCloud();
+        });
+    });
     </script>
 </body>
-</html>
+                                                                                                                  </html>
