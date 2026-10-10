@@ -218,6 +218,7 @@
             transition: all 0.3s ease;
         }
 
+        /* --- تنسيقات وضع الأدمن والتعديل والإضافة --- */
         .editable-price {
             background: #ffeaa7 !important;
             border: 2px dashed #d35400 !important;
@@ -543,7 +544,7 @@
         }
         const database = firebase.database();
 
-        // البيانات الافتراضية للمنيو في حال كانت القاعدة فارغة
+        // البيانات الافتراضية الأصلية للمنيو
         const defaultMenuData = {
             "hot-drinks": [
                 {name: "قهوة تركي سنجل", price: "30 ج.م"}, {name: "قهوة تركي دبل", price: "35 ج.م"},
@@ -606,7 +607,7 @@
             ]
         };
 
-        // دالة لإضافة صنف جديد داخل القسم المراد أثناء التعديل
+        // دالة لإضافة صنف جديد داخل القسم المراد
         function addNewItem(button) {
             const section = button.closest('.menu-section');
             const grid = section.querySelector('.menu-grid');
@@ -621,7 +622,7 @@
             grid.appendChild(newItem);
         }
 
-        // جلب البيانات وعرضها فور فتح الصفحة
+        // جلب البيانات وعرضها بشكل تلقائي من Firebase لجميع الزوار
         function loadMenuData() {
             database.ref('menuData').on('value', (snapshot) => {
                 const data = snapshot.val() || defaultMenuData;
@@ -687,7 +688,7 @@
                 }
             });
 
-            // حفظ ونشر التعديلات سحابياً لجميع الزوار
+            // حفظ التعديلات ونشرها سحابياً لجميع الزوار عبر Firebase
             saveBtn.addEventListener('click', () => {
                 const allSectionsData = {};
                 
@@ -706,12 +707,10 @@
                     allSectionsData[catId] = items;
                 });
                 
-                // رفع البيانات إلى Firebase لتحديثها عند كل الزوار
                 database.ref('menuData').set(allSectionsData)
                     .then(() => {
                         alert("تم حفظ ونشر التعديلات بنجاح وظهرت لجميع الزوار! 🚀");
                         
-                        // إيقاف وضع التعديل وإخفاء الأزرار
                         document.querySelectorAll('.menu-item').forEach(item => {
                             const nameEl = item.querySelector('.item-name');
                             const priceEl = item.querySelector('.item-price');
